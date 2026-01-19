@@ -1,0 +1,1292 @@
+{
+  "name": "TeamCanvas Export",
+  "version": "2.0",
+  "projects": [
+    {
+      "id": "p-squid",
+      "name": "Squid",
+      "description": "Équipe Squid",
+      "members": [
+        {
+          "id": "sq-1",
+          "name": "Pierre",
+          "role": "Développeur",
+          "avatar": "avatars/pierre.png",
+          "email": "pierre@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 3
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 2
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 118 - Poste 16",
+              "Jeudi": "Bureau 140 - Poste 1",
+              "Vendredi": "Bureau 118 - Poste 16"
+            }
+          }
+        },
+        {
+          "id": "sq-2",
+          "name": "Pierre Nicolas",
+          "role": "Développeur",
+          "avatar": "avatars/pierre-nicolas.png",
+          "email": "p.nicolas@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 3
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 118 - Poste 17",
+              "Jeudi": "Bureau 140 - Poste 2",
+              "Vendredi": "Bureau 118 - Poste 17"
+            }
+          }
+        },
+        {
+          "id": "sq-3",
+          "name": "Garion",
+          "role": "Développeur",
+          "avatar": "avatars/garion.png",
+          "email": "garion@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 5
+            },
+            {
+              "name": "React",
+              "level": 2
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 5
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 118 - Poste 18",
+              "Jeudi": "Bureau 140 - Poste 3",
+              "Vendredi": "Bureau 118 - Poste 18"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-cles",
+      "name": "CLES",
+      "description": "Équipe CLES",
+      "members": [
+        {
+          "id": "cl-1",
+          "name": "Leo",
+          "role": "Développeur",
+          "avatar": "avatars/leo.png",
+          "email": "leo@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 2
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 8",
+              "Mardi": "Bureau 116bis - Poste 13",
+              "Mercredi": "Bureau 116bis - Poste 13"
+            }
+          }
+        },
+        {
+          "id": "cl-2",
+          "name": "Mathieu T",
+          "role": "Développeur",
+          "avatar": "avatars/mathieu-t.png",
+          "email": "m.t@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 5
+            },
+            {
+              "name": "Node",
+              "level": 3
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 9",
+              "Mardi": "Bureau 116bis - Poste 14",
+              "Mercredi": "Bureau 116bis - Poste 14"
+            }
+          }
+        },
+        {
+          "id": "cl-3",
+          "name": "Charlotte",
+          "role": "Développeur",
+          "avatar": "avatars/charlotte.png",
+          "email": "charlotte@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 2
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 10",
+              "Mardi": "Bureau 116bis - Poste 15",
+              "Mercredi": "Bureau 116bis - Poste 15"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-mes",
+      "name": "MES",
+      "description": "Équipe MES",
+      "members": [
+        {
+          "id": "me-1",
+          "name": "Yohan",
+          "role": "Développeur",
+          "avatar": "avatars/yohan.png",
+          "email": "yohan@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 116 - Poste 3",
+              "Vendredi": "Bureau 116 - Poste 3"
+            }
+          }
+        },
+        {
+          "id": "me-2",
+          "name": "Victor",
+          "role": "Développeur",
+          "avatar": "avatars/victor.png",
+          "email": "victor@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 3
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 116 - Poste 4",
+              "Vendredi": "Bureau 116 - Poste 4"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-myad",
+      "name": "My_AD",
+      "description": "Équipe My_AD",
+      "members": [
+        {
+          "id": "my-1",
+          "name": "Robin",
+          "role": "Développeur",
+          "avatar": "avatars/robin.png",
+          "email": "robin@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 5
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 11",
+              "Mardi": "Bureau 116bis - Poste 8",
+              "Mercredi": "Bureau 116bis - Poste 8"
+            }
+          }
+        },
+        {
+          "id": "my-2",
+          "name": "Cyril",
+          "role": "Développeur",
+          "avatar": "avatars/cyril.png",
+          "email": "cyril@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 5
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 12",
+              "Mardi": "Bureau 116bis - Poste 9",
+              "Mercredi": "Bureau 116bis - Poste 9"
+            }
+          }
+        },
+        {
+          "id": "my-3",
+          "name": "Diane",
+          "role": "Développeur",
+          "avatar": "avatars/diane.png",
+          "email": "diane@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 13",
+              "Mardi": "Bureau 116bis - Poste 10",
+              "Mercredi": "Bureau 116bis - Poste 10"
+            }
+          }
+        },
+        {
+          "id": "my-4",
+          "name": "Akram",
+          "role": "Développeur",
+          "avatar": "avatars/akram.png",
+          "email": "akram@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 3
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 5
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 14",
+              "Mardi": "Bureau 116bis - Poste 11",
+              "Mercredi": "Bureau 116bis - Poste 11"
+            }
+          }
+        },
+        {
+          "id": "my-5",
+          "name": "Jonathan",
+          "role": "Business Analyst",
+          "avatar": "avatars/jonathan.png",
+          "email": "jonathan@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 5
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116bis - Poste 15",
+              "Mardi": "Bureau 116bis - Poste 12",
+              "Mercredi": "Bureau 116bis - Poste 12"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-mcdb",
+      "name": "MCDB",
+      "description": "Équipe MCDB",
+      "members": [
+        {
+          "id": "mc-1",
+          "name": "Thomas C",
+          "role": "Développeur",
+          "avatar": "avatars/thomas-c.png",
+          "email": "t.c@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 116 - Poste 1",
+              "Jeudi": "Bureau 116bis - Poste 14",
+              "Vendredi": "Bureau 116 - Poste 1"
+            }
+          }
+        },
+        {
+          "id": "mc-2",
+          "name": "Samuel",
+          "role": "Développeur",
+          "avatar": "avatars/samuel.png",
+          "email": "samuel@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 5
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 116 - Poste 2",
+              "Jeudi": "Bureau 116bis - Poste 15",
+              "Vendredi": "Bureau 116 - Poste 2"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-decade",
+      "name": "DECADE X",
+      "description": "Équipe DECADE X",
+      "members": [
+        {
+          "id": "dx-1",
+          "name": "Thomas G",
+          "role": "Développeur",
+          "avatar": "avatars/thomas-g.png",
+          "email": "t.g@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 15 - Poste 1",
+              "Jeudi": "Bureau 116bis - Poste 8",
+              "Vendredi": "Bureau 116bis - Poste 8"
+            }
+          }
+        },
+        {
+          "id": "dx-2",
+          "name": "Theophane",
+          "role": "Développeur",
+          "avatar": "avatars/theophane.png",
+          "email": "theophane@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 5
+            },
+            {
+              "name": "React",
+              "level": 3
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 15 - Poste 2",
+              "Jeudi": "Bureau 116bis - Poste 9",
+              "Vendredi": "Bureau 116bis - Poste 9"
+            }
+          }
+        },
+        {
+          "id": "dx-3",
+          "name": "Julien",
+          "role": "Business Analyst",
+          "avatar": "avatars/julien.png",
+          "email": "julien@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 3
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 15 - Poste 3",
+              "Jeudi": "Bureau 116bis - Poste 10",
+              "Vendredi": "Bureau 116bis - Poste 10"
+            }
+          }
+        },
+        {
+          "id": "dx-4",
+          "name": "Pierrick",
+          "role": "Développeur",
+          "avatar": "avatars/pierrick.png",
+          "email": "pierrick@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 5
+            },
+            {
+              "name": "Node",
+              "level": 5
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 15 - Poste 4",
+              "Jeudi": "Bureau 116bis - Poste 11",
+              "Vendredi": "Bureau 116bis - Poste 11"
+            }
+          }
+        },
+        {
+          "id": "dx-5",
+          "name": "Mathieu D",
+          "role": "Développeur",
+          "avatar": "avatars/mathieu-d.png",
+          "email": "m.d@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 5
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 15 - Poste 5",
+              "Jeudi": "Bureau 116bis - Poste 12",
+              "Vendredi": "Bureau 116bis - Poste 12"
+            }
+          }
+        },
+        {
+          "id": "dx-6",
+          "name": "Sebastien L",
+          "role": "Manager",
+          "avatar": "avatars/sebastien-l.png",
+          "email": "s.l@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 5
+            },
+            {
+              "name": "React",
+              "level": 3
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 15 - Poste 6",
+              "Jeudi": "Bureau 116bis - Poste 13",
+              "Vendredi": "Bureau 116bis - Poste 13"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-dist",
+      "name": "DISTURBANCE",
+      "description": "Équipe DISTURBANCE",
+      "members": [
+        {
+          "id": "di-1",
+          "name": "William",
+          "role": "Développeur",
+          "avatar": "avatars/william.png",
+          "email": "william@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 5
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Mardi": "Bureau 116 - Poste 5",
+              "Vendredi": "Bureau 116 - Poste 5"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-delw",
+      "name": "DELW",
+      "description": "Équipe DELW",
+      "members": [
+        {
+          "id": "dw-1",
+          "name": "Thibaud",
+          "role": "Développeur",
+          "avatar": "avatars/thibaud.png",
+          "email": "thibaud@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116 - Poste 1",
+              "Mercredi": "Bureau 116 - Poste 1",
+              "Jeudi": "Bureau 116 - Poste 1"
+            }
+          }
+        },
+        {
+          "id": "dw-2",
+          "name": "Noé",
+          "role": "Développeur",
+          "avatar": "avatars/noe.png",
+          "email": "noe@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116 - Poste 2",
+              "Mercredi": "Bureau 116 - Poste 2",
+              "Jeudi": "Bureau 116 - Poste 2"
+            }
+          }
+        },
+        {
+          "id": "dw-3",
+          "name": "Sebastien B",
+          "role": "Développeur",
+          "avatar": "avatars/sebastien-b.png",
+          "email": "s.b@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 5
+            },
+            {
+              "name": "React",
+              "level": 3
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 5
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116 - Poste 3",
+              "Mercredi": "Bureau 116 - Poste 3",
+              "Jeudi": "Bureau 116 - Poste 3"
+            }
+          }
+        },
+        {
+          "id": "dw-4",
+          "name": "Clément apprenti",
+          "role": "Développeur",
+          "avatar": "avatars/clement.png",
+          "email": "clement@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 2
+            },
+            {
+              "name": "Node",
+              "level": 3
+            },
+            {
+              "name": "Devops",
+              "level": 2
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116 - Poste 4",
+              "Mercredi": "Bureau 116 - Poste 4",
+              "Jeudi": "Bureau 116 - Poste 4"
+            }
+          }
+        },
+        {
+          "id": "dw-5",
+          "name": "Vincent",
+          "role": "Développeur",
+          "avatar": "avatars/vincent.png",
+          "email": "vincent@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 5
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116 - Poste 5",
+              "Mercredi": "Bureau 116 - Poste 5",
+              "Jeudi": "Bureau 116 - Poste 5"
+            }
+          }
+        },
+        {
+          "id": "dw-6",
+          "name": "Hugo",
+          "role": "Développeur",
+          "avatar": "avatars/hugo.png",
+          "email": "hugo@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 3
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 5
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116 - Poste 6",
+              "Mercredi": "Bureau 116 - Poste 6",
+              "Jeudi": "Bureau 116 - Poste 6"
+            }
+          }
+        },
+        {
+          "id": "dw-7",
+          "name": "Sarah",
+          "role": "Manager",
+          "avatar": "avatars/sarah.png",
+          "email": "sarah@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 116 - Poste 7",
+              "Mercredi": "Bureau 116 - Poste 7",
+              "Jeudi": "Bureau 116 - Poste 7"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "p-autre",
+      "name": "Autre",
+      "description": "Autres collaborateurs",
+      "members": [
+        {
+          "id": "au-1",
+          "name": "Maxime",
+          "role": "Développeur",
+          "avatar": "avatars/maxime.png",
+          "email": "maxime@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 4
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 4
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 118 - Poste 16",
+              "Mercredi": "Bureau 118 - Poste 16",
+              "Jeudi": "Bureau 118 - Poste 16"
+            }
+          }
+        },
+        {
+          "id": "au-2",
+          "name": "Marion",
+          "role": "Développeur",
+          "avatar": "avatars/marion.png",
+          "email": "marion@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 3
+            },
+            {
+              "name": "React",
+              "level": 5
+            },
+            {
+              "name": "AWS",
+              "level": 3
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 3
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 118 - Poste 17",
+              "Mercredi": "Bureau 118 - Poste 17",
+              "Jeudi": "Bureau 118 - Poste 17"
+            }
+          }
+        },
+        {
+          "id": "au-3",
+          "name": "Guillaume",
+          "role": "Développeur",
+          "avatar": "avatars/guillaume.png",
+          "email": "guillaume@company.com",
+          "skills": [
+            {
+              "name": "Python",
+              "level": 5
+            },
+            {
+              "name": "React",
+              "level": 4
+            },
+            {
+              "name": "AWS",
+              "level": 4
+            },
+            {
+              "name": "Node",
+              "level": 4
+            },
+            {
+              "name": "Devops",
+              "level": 5
+            }
+          ],
+          "presence": {
+            "schedule": {
+              "Lundi": "Bureau 118 - Poste 18",
+              "Mercredi": "Bureau 118 - Poste 18",
+              "Jeudi": "Bureau 118 - Poste 18"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "offices": [
+    {
+      "id": "off-a",
+      "name": "Bureau 116",
+      "stations": [
+        "Poste 1",
+        "Poste 2",
+        "Poste 3",
+        "Poste 4",
+        "Poste 5",
+        "Poste 6",
+        "Poste 7"
+      ]
+    },
+    {
+      "id": "off-b",
+      "name": "Bureau 116bis",
+      "stations": [
+        "Poste 8",
+        "Poste 9",
+        "Poste 10",
+        "Poste 11",
+        "Poste 12",
+        "Poste 13",
+        "Poste 14",
+        "Poste 15"
+      ]
+    },
+    {
+      "id": "off-c",
+      "name": "Bureau 118",
+      "stations": [
+        "Poste 16",
+        "Poste 17",
+        "Poste 18",
+        "Poste 19"
+      ]
+    },
+    {
+      "id": "off-d",
+      "name": "Bureau 140",
+      "stations": [
+        "Poste 1",
+        "Poste 2",
+        "Poste 3",
+        "Poste 4",
+        "Poste 5",
+        "Poste 6"
+      ]
+    },
+    {
+      "id": "off-e",
+      "name": "Bureau 15",
+      "stations": [
+        "Poste 1",
+        "Poste 2",
+        "Poste 3",
+        "Poste 4",
+        "Poste 5",
+        "Poste 6",
+        "Poste 7",
+        "Poste 8",
+        "Poste 9",
+        "Poste 10",
+        "Poste 11",
+        "Poste 12",
+        "Poste 13",
+        "Poste 14",
+        "Poste 15"
+      ]
+    }
+  ],
+  "requestFramePermissions": [],
+  "description": ""
+}
