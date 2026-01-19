@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<Role | "All">("All");
   const [viewMode, setViewMode] = useState<"talents" | "planning" | "offices">(
-    "talents"
+    "talents",
   );
   const [editingMember, setEditingMember] = useState<{
     member: StaffMember;
@@ -71,7 +71,7 @@ const App: React.FC = () => {
   const saveToLocalStorage = (
     projData: Project[],
     offData: Office[],
-    version?: string
+    version?: string,
   ) => {
     localStorage.setItem("team_canvas_data_projects", JSON.stringify(projData));
     localStorage.setItem("team_canvas_data_offices", JSON.stringify(offData));
@@ -80,14 +80,14 @@ const App: React.FC = () => {
 
   const handleUpdateMember = (
     updatedMember: StaffMember,
-    projectId: string
+    projectId: string,
   ) => {
     const newProjects = projects.map((proj) => {
       if (proj.id === projectId) {
         return {
           ...proj,
           members: proj.members.map((m) =>
-            m.id === updatedMember.id ? updatedMember : m
+            m.id === updatedMember.id ? updatedMember : m,
           ),
         };
       }
@@ -97,13 +97,13 @@ const App: React.FC = () => {
     saveToLocalStorage(
       newProjects,
       offices,
-      localStorage.getItem("team_canvas_data_version") || undefined
+      localStorage.getItem("team_canvas_data_version") || undefined,
     );
     setEditingMember(null);
   };
 
   const handleBulkAssignmentUpdate = (
-    updates: { memberId: string; day: DayOfWeek; assignment: string | null }[]
+    updates: { memberId: string; day: DayOfWeek; assignment: string | null }[],
   ) => {
     setProjects((prevProjects) => {
       let currentProjects = [...prevProjects];
@@ -132,7 +132,7 @@ const App: React.FC = () => {
       saveToLocalStorage(
         currentProjects,
         offices,
-        localStorage.getItem("team_canvas_data_version") || undefined
+        localStorage.getItem("team_canvas_data_version") || undefined,
       );
       return currentProjects;
     });
@@ -141,7 +141,7 @@ const App: React.FC = () => {
   const handleGlobalAssignmentUpdate = (
     memberId: string,
     day: DayOfWeek,
-    assignment: string | null
+    assignment: string | null,
   ) => {
     handleBulkAssignmentUpdate([{ memberId, day, assignment }]);
   };
@@ -163,7 +163,7 @@ const App: React.FC = () => {
     link.setAttribute("href", url);
     link.setAttribute(
       "download",
-      `skycenter_config_${new Date().toISOString().split("T")[0]}.json`
+      `skycenter_config_${new Date().toISOString().split("T")[0]}.json`,
     );
     document.body.appendChild(link);
     link.click();
@@ -178,7 +178,7 @@ const App: React.FC = () => {
           const matchesSearch =
             member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             member.skills.some((s) =>
-              s.name.toLowerCase().includes(searchTerm.toLowerCase())
+              s.name.toLowerCase().includes(searchTerm.toLowerCase()),
             );
           const matchesRole =
             selectedRole === "All" || member.role === selectedRole;
