@@ -1,5 +1,5 @@
 {
-  "name": "TeamCanvas Export",
+  "name": "SSG Airbus Export",
   "version": "2.0",
   "projects": [
     {
@@ -1246,12 +1246,7 @@
     {
       "id": "off-c",
       "name": "Bureau 118",
-      "stations": [
-        "Poste 16",
-        "Poste 17",
-        "Poste 18",
-        "Poste 19"
-      ]
+      "stations": ["Poste 16", "Poste 17", "Poste 18", "Poste 19"]
     },
     {
       "id": "off-d",
