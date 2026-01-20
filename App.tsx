@@ -218,7 +218,7 @@ const App: React.FC = () => {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg font-black leading-none tracking-tight">
-                Airbus Cordp Academy
+                Airbus Corp Academy
               </h1>
               <p className="text-[10px] font-bold text-sky-500 tracking-[0.2em] uppercase mt-1">
                 Plateau Operational Excellence

@@ -267,7 +267,7 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
             ${copyStatus === 'success' ? 'bg-emerald-500 text-white opacity-100' : 
               copyStatus === 'error' ? 'bg-red-500 text-white opacity-100' : 
               'bg-white/50 dark:bg-slate-800/50 text-gray-400 hover:text-sky-500 opacity-0 group-hover:opacity-100'}`}
-          title="Générer Carte TCG"
+          title="Générer carte"
         >
           {copyStatus === 'loading' ? <i className="fa-solid fa-spinner fa-spin text-xs"></i> :
            copyStatus === 'success' ? <i className="fa-solid fa-check"></i> :
