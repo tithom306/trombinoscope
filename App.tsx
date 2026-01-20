@@ -148,7 +148,7 @@ const App: React.FC = () => {
 
   const handleExportJSON = () => {
     const dataToExport = {
-      name: "SkyCenter Export",
+      name: "Airbus Corp Academy Export",
       version: localStorage.getItem("team_canvas_data_version") || "2.0",
       projects: projects,
       offices: offices,
@@ -163,7 +163,7 @@ const App: React.FC = () => {
     link.setAttribute("href", url);
     link.setAttribute(
       "download",
-      `skycenter_config_${new Date().toISOString().split("T")[0]}.json`,
+      `airbuscorp_config_${new Date().toISOString().split("T")[0]}.json`,
     );
     document.body.appendChild(link);
     link.click();
@@ -218,7 +218,7 @@ const App: React.FC = () => {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg font-black leading-none tracking-tight">
-                SkyCenter
+                Airbus Cordp Academy
               </h1>
               <p className="text-[10px] font-bold text-sky-500 tracking-[0.2em] uppercase mt-1">
                 Plateau Operational Excellence
