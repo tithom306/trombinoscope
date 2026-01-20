@@ -148,7 +148,7 @@ const App: React.FC = () => {
 
   const handleExportJSON = () => {
     const dataToExport = {
-      name: "Airbus Cord Academy Export",
+      name: "SkyCenter Export",
       version: localStorage.getItem("team_canvas_data_version") || "2.0",
       projects: projects,
       offices: offices,
@@ -218,22 +218,12 @@ const App: React.FC = () => {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg font-black leading-none tracking-tight">
-                Airbus Corp Academy
+                SkyCenter
               </h1>
               <p className="text-[10px] font-bold text-sky-500 tracking-[0.2em] uppercase mt-1">
                 Plateau Operational Excellence
               </p>
             </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleExportJSON}
-              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all bg-sky-100 text-sky-600 hover:bg-sky-500 hover:text-white dark:bg-slate-800"
-              title="Exporter la configuration (JSON)"
-            >
-              <i className="fa-solid fa-download"></i>
-            </button>
           </div>
 
           <div className="hidden md:flex bg-gray-100 dark:bg-slate-800 p-1 rounded-xl">
@@ -257,12 +247,26 @@ const App: React.FC = () => {
             </button>
           </div>
 
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500"
-          >
-            <i className={`fa-solid ${isDarkMode ? "fa-sun" : "fa-moon"}`}></i>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleExportJSON}
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white dark:hover:bg-sky-500"
+              title="Exporter la configuration (JSON)"
+            >
+              <i className="fa-solid fa-download"></i>
+            </button>
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white dark:hover:bg-sky-500"
+              title={
+                isDarkMode ? "Passer en mode clair" : "Passer en mode sombre"
+              }
+            >
+              <i
+                className={`fa-solid ${isDarkMode ? "fa-sun" : "fa-moon"}`}
+              ></i>
+            </button>
+          </div>
         </div>
       </header>
 
