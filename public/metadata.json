@@ -1,11 +1,11 @@
 {
   "name": "SSG Airbus Export",
-  "version": "2.0",
+  "version": "3.0",
   "projects": [
     {
       "id": "p-squid",
       "name": "Squid",
-      "description": "Équipe Squid",
+      "description": "Équipe Squid - Expertise Backend & Cloud",
       "members": [
         {
           "id": "sq-1",
@@ -15,12 +15,12 @@
           "email": "pierre@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 3
+              "name": "Python",
+              "level": 5
             },
             {
               "name": "AWS",
@@ -29,10 +29,6 @@
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 2
             }
           ],
           "presence": {
@@ -51,12 +47,12 @@
           "email": "p.nicolas@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 3
+              "name": "REACT",
+              "level": 5
             },
             {
-              "name": "React",
-              "level": 5
+              "name": "Python",
+              "level": 3
             },
             {
               "name": "AWS",
@@ -64,11 +60,7 @@
             },
             {
               "name": "Node",
-              "level": 3
-            },
-            {
-              "name": "Devops",
-              "level": 3
+              "level": 4
             }
           ],
           "presence": {
@@ -87,24 +79,20 @@
           "email": "garion@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 5
-            },
-            {
-              "name": "React",
-              "level": 2
-            },
-            {
-              "name": "AWS",
+              "name": "REACT",
               "level": 3
             },
             {
-              "name": "Node",
+              "name": "Python",
               "level": 4
             },
             {
-              "name": "Devops",
+              "name": "AWS",
               "level": 5
+            },
+            {
+              "name": "Node",
+              "level": 3
             }
           ],
           "presence": {
@@ -120,7 +108,7 @@
     {
       "id": "p-cles",
       "name": "CLES",
-      "description": "Équipe CLES",
+      "description": "Équipe CLES - Solutions de Sécurité",
       "members": [
         {
           "id": "cl-1",
@@ -130,24 +118,20 @@
           "email": "leo@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 2
             }
           ],
           "presence": {
@@ -166,24 +150,20 @@
           "email": "m.t@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 3
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
-              "name": "AWS",
+              "name": "Python",
               "level": 5
             },
             {
-              "name": "Node",
-              "level": 3
+              "name": "AWS",
+              "level": 4
             },
             {
-              "name": "Devops",
-              "level": 4
+              "name": "Node",
+              "level": 5
             }
           ],
           "presence": {
@@ -202,24 +182,20 @@
           "email": "charlotte@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 5
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 5
-            },
-            {
               "name": "AWS",
-              "level": 2
+              "level": 3
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -235,7 +211,7 @@
     {
       "id": "p-mes",
       "name": "MES",
-      "description": "Équipe MES",
+      "description": "Équipe MES - Manufacturing Execution Systems",
       "members": [
         {
           "id": "me-1",
@@ -245,24 +221,20 @@
           "email": "yohan@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -280,12 +252,12 @@
           "email": "victor@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 3
+              "name": "REACT",
+              "level": 5
             },
             {
-              "name": "React",
-              "level": 5
+              "name": "Python",
+              "level": 3
             },
             {
               "name": "AWS",
@@ -294,10 +266,6 @@
             {
               "name": "Node",
               "level": 3
-            },
-            {
-              "name": "Devops",
-              "level": 4
             }
           ],
           "presence": {
@@ -312,7 +280,7 @@
     {
       "id": "p-myad",
       "name": "My_AD",
-      "description": "Équipe My_AD",
+      "description": "Équipe My_AD - Active Directory Tools",
       "members": [
         {
           "id": "my-1",
@@ -322,24 +290,20 @@
           "email": "robin@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 5
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -358,11 +322,11 @@
           "email": "cyril@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 4
             },
             {
-              "name": "React",
+              "name": "Python",
               "level": 4
             },
             {
@@ -371,10 +335,6 @@
             },
             {
               "name": "Node",
-              "level": 4
-            },
-            {
-              "name": "Devops",
               "level": 4
             }
           ],
@@ -394,12 +354,12 @@
           "email": "diane@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 4
+              "name": "REACT",
+              "level": 5
             },
             {
-              "name": "React",
-              "level": 5
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
@@ -408,10 +368,6 @@
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -430,12 +386,12 @@
           "email": "akram@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 4
+              "name": "REACT",
+              "level": 3
             },
             {
-              "name": "React",
-              "level": 3
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
@@ -444,10 +400,6 @@
             {
               "name": "Node",
               "level": 5
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -466,24 +418,20 @@
           "email": "jonathan@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 5
             }
           ],
           "presence": {
@@ -499,7 +447,7 @@
     {
       "id": "p-mcdb",
       "name": "MCDB",
-      "description": "Équipe MCDB",
+      "description": "Équipe MCDB - Master Customer Data Base",
       "members": [
         {
           "id": "mc-1",
@@ -509,11 +457,11 @@
           "email": "t.c@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 4
             },
             {
-              "name": "React",
+              "name": "Python",
               "level": 4
             },
             {
@@ -522,10 +470,6 @@
             },
             {
               "name": "Node",
-              "level": 4
-            },
-            {
-              "name": "Devops",
               "level": 4
             }
           ],
@@ -545,24 +489,20 @@
           "email": "samuel@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 3
+            },
+            {
               "name": "Python",
               "level": 3
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 5
             },
             {
               "name": "Node",
               "level": 5
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -578,7 +518,7 @@
     {
       "id": "p-decade",
       "name": "DECADE X",
-      "description": "Équipe DECADE X",
+      "description": "Équipe DECADE X - Innovation",
       "members": [
         {
           "id": "dx-1",
@@ -588,24 +528,20 @@
           "email": "t.g@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -624,23 +560,19 @@
           "email": "theophane@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 5
             },
             {
-              "name": "React",
-              "level": 3
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
-              "level": 4
+              "level": 3
             },
             {
               "name": "Node",
-              "level": 4
-            },
-            {
-              "name": "Devops",
               "level": 4
             }
           ],
@@ -660,24 +592,20 @@
           "email": "julien@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 4
             },
             {
-              "name": "React",
+              "name": "Python",
               "level": 5
             },
             {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 3
-            },
-            {
-              "name": "Devops",
-              "level": 4
             }
           ],
           "presence": {
@@ -696,16 +624,16 @@
           "email": "pierrick@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 3
             },
             {
-              "name": "React",
+              "name": "Python",
               "level": 4
             },
             {
               "name": "AWS",
-              "level": 5
+              "level": 4
             },
             {
               "name": "Node",
@@ -732,24 +660,20 @@
           "email": "m.d@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 5
             }
           ],
           "presence": {
@@ -768,23 +692,19 @@
           "email": "s.l@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 5
+              "name": "REACT",
+              "level": 4
             },
             {
-              "name": "React",
-              "level": 3
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
-              "level": 4
+              "level": 5
             },
             {
               "name": "Node",
-              "level": 4
-            },
-            {
-              "name": "Devops",
               "level": 4
             }
           ],
@@ -799,9 +719,9 @@
       ]
     },
     {
-      "id": "p-dist",
+      "id": "p-disturbance",
       "name": "DISTURBANCE",
-      "description": "Équipe DISTURBANCE",
+      "description": "Équipe Disturbance",
       "members": [
         {
           "id": "di-1",
@@ -811,23 +731,19 @@
           "email": "william@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 5
-            },
-            {
               "name": "AWS",
-              "level": 5
-            },
-            {
-              "name": "Node",
               "level": 4
             },
             {
-              "name": "Devops",
+              "name": "Node",
               "level": 4
             }
           ],
@@ -853,24 +769,20 @@
           "email": "thibaud@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -889,24 +801,20 @@
           "email": "noe@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 5
-            },
-            {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -925,12 +833,12 @@
           "email": "s.b@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 5
+              "name": "REACT",
+              "level": 4
             },
             {
-              "name": "React",
-              "level": 3
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
@@ -939,10 +847,6 @@
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 5
             }
           ],
           "presence": {
@@ -961,12 +865,12 @@
           "email": "clement@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 3
+              "name": "REACT",
+              "level": 2
             },
             {
-              "name": "React",
-              "level": 4
+              "name": "Python",
+              "level": 2
             },
             {
               "name": "AWS",
@@ -974,10 +878,6 @@
             },
             {
               "name": "Node",
-              "level": 3
-            },
-            {
-              "name": "Devops",
               "level": 2
             }
           ],
@@ -997,23 +897,19 @@
           "email": "vincent@company.com",
           "skills": [
             {
+              "name": "REACT",
+              "level": 4
+            },
+            {
               "name": "Python",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 4
-            },
-            {
               "name": "AWS",
-              "level": 5
+              "level": 4
             },
             {
               "name": "Node",
-              "level": 4
-            },
-            {
-              "name": "Devops",
               "level": 4
             }
           ],
@@ -1033,12 +929,12 @@
           "email": "hugo@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 4
             },
             {
-              "name": "React",
-              "level": 3
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
@@ -1046,11 +942,7 @@
             },
             {
               "name": "Node",
-              "level": 5
-            },
-            {
-              "name": "Devops",
-              "level": 3
+              "level": 4
             }
           ],
           "presence": {
@@ -1069,12 +961,12 @@
           "email": "sarah@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 3
+              "name": "REACT",
+              "level": 4
             },
             {
-              "name": "React",
-              "level": 5
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
@@ -1083,10 +975,6 @@
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -1102,7 +990,7 @@
     {
       "id": "p-autre",
       "name": "Autre",
-      "description": "Autres collaborateurs",
+      "description": "Collaborateurs transverses SAP",
       "members": [
         {
           "id": "au-1",
@@ -1112,11 +1000,11 @@
           "email": "maxime@company.com",
           "skills": [
             {
-              "name": "Python",
+              "name": "REACT",
               "level": 4
             },
             {
-              "name": "React",
+              "name": "Python",
               "level": 4
             },
             {
@@ -1125,10 +1013,6 @@
             },
             {
               "name": "Node",
-              "level": 4
-            },
-            {
-              "name": "Devops",
               "level": 4
             }
           ],
@@ -1148,24 +1032,20 @@
           "email": "marion@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 3
+              "name": "REACT",
+              "level": 4
             },
             {
-              "name": "React",
-              "level": 5
+              "name": "Python",
+              "level": 4
             },
             {
               "name": "AWS",
-              "level": 3
+              "level": 4
             },
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 3
             }
           ],
           "presence": {
@@ -1184,11 +1064,11 @@
           "email": "guillaume@company.com",
           "skills": [
             {
-              "name": "Python",
-              "level": 5
+              "name": "REACT",
+              "level": 4
             },
             {
-              "name": "React",
+              "name": "Python",
               "level": 4
             },
             {
@@ -1198,10 +1078,6 @@
             {
               "name": "Node",
               "level": 4
-            },
-            {
-              "name": "Devops",
-              "level": 5
             }
           ],
           "presence": {
@@ -1283,5 +1159,5 @@
     }
   ],
   "requestFramePermissions": [],
-  "description": ""
+  "description": "Trombinoscope complet importé depuis le plan de charge du plateau."
 }

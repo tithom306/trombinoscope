@@ -10,6 +10,11 @@ export interface Skill {
   level: number; // 1 to 5
 }
 
+export interface Certification {
+  name: string;
+  provider: string; // ex: AWS, Microsoft, Scrum.org
+}
+
 export type DayOfWeek = 'Lundi' | 'Mardi' | 'Mercredi' | 'Jeudi' | 'Vendredi';
 
 export interface Office {
@@ -30,6 +35,7 @@ export interface StaffMember {
   avatar: string;
   email: string;
   skills: Skill[];
+  certifications?: Certification[];
   presence: PresenceInfo;
   bio?: string;
 }
