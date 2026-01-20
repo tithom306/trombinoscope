@@ -10,7 +10,7 @@ interface StaffCardProps {
   onEdit: () => void;
 }
 
-const DAYS: DayOfWeek[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Fondredi'];
+const DAYS: DayOfWeek[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 
 const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
   const [imgError, setImgError] = useState(false);
@@ -26,8 +26,8 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
           light: 'bg-sky-50', 
           dark: 'bg-sky-900', 
           text: 'text-sky-600',
-          accent: '#0ea5e9',
-          hud: 'rgba(14, 165, 233, 0.15)'
+          accent: 'sky-400',
+          hudColor: 'rgba(14, 165, 233, 0.2)'
         };
       case Role.BUSINESS_ANALYST: 
         return { 
@@ -36,8 +36,8 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
           light: 'bg-amber-50', 
           dark: 'bg-amber-900', 
           text: 'text-amber-600',
-          accent: '#f59e0b',
-          hud: 'rgba(245, 158, 11, 0.15)'
+          accent: 'amber-400',
+          hudColor: 'rgba(245, 158, 11, 0.2)'
         };
       case Role.MANAGER: 
         return { 
@@ -46,8 +46,8 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
           light: 'bg-purple-50', 
           dark: 'bg-purple-900', 
           text: 'text-purple-600',
-          accent: '#9333ea',
-          hud: 'rgba(147, 51, 234, 0.15)'
+          accent: 'purple-400',
+          hudColor: 'rgba(147, 51, 234, 0.2)'
         };
       default: 
         return { 
@@ -56,8 +56,8 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
           light: 'bg-slate-50', 
           dark: 'bg-slate-900', 
           text: 'text-slate-600',
-          accent: '#64748b',
-          hud: 'rgba(100, 116, 139, 0.15)'
+          accent: 'slate-400',
+          hudColor: 'rgba(100, 116, 139, 0.2)'
         };
     }
   };
@@ -143,7 +143,7 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
   return (
     <div className="staff-card relative p-8 flex flex-col items-center group h-fit self-start transition-all duration-300 min-h-[520px] border bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-sky-100 dark:border-sky-900/30 rounded-2xl shadow-xl">
       
-      {/* --- BADGE DE CAPTURE (POKEMON TCG STYLE - HOLOGRAPHIC AVIATION) --- */}
+      {/* --- BADGE DE CAPTURE (TCG POKEMON STYLE - HUD AVIATION) --- */}
       <div className="fixed -left-[9999px] top-0 pointer-events-none">
         <div 
           ref={compactCaptureRef}
@@ -168,33 +168,34 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
                 </div>
              </div>
 
-             {/* Illustration Image (HUD Aviation + Holographic + No Cut) */}
+             {/* Illustration Image (HUD Aviation Cockpit + Holographic) */}
              <div className={`w-full aspect-[4/3] rounded-lg border-[4px] ${theme.border} dark:border-slate-700 shadow-xl overflow-hidden relative bg-slate-950 p-8 flex items-center justify-center`}>
                 
                 {/* Background HUD Aviation */}
                 <div className="absolute inset-0 pointer-events-none opacity-40" style={{
                   backgroundImage: `
-                    radial-gradient(circle at center, ${theme.hud} 0%, transparent 75%),
-                    repeating-linear-gradient(0deg, transparent 0, transparent 1px, ${theme.hud} 1px, ${theme.hud} 2px),
-                    repeating-linear-gradient(90deg, transparent 0, transparent 1px, ${theme.hud} 1px, ${theme.hud} 2px)
+                    radial-gradient(circle at center, ${theme.hudColor} 0%, transparent 75%),
+                    repeating-linear-gradient(0deg, transparent 0, transparent 1px, ${theme.hudColor} 1px, ${theme.hudColor} 2px),
+                    repeating-linear-gradient(90deg, transparent 0, transparent 1px, ${theme.hudColor} 1px, ${theme.hudColor} 2px)
                   `,
                   backgroundSize: '100% 100%, 20px 20px, 20px 20px'
                 }}></div>
 
+                {/* Avatar cadré sans coupe */}
                 <img 
                   src={imageSrc} 
                   crossOrigin="anonymous" 
-                  className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" 
+                  className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-110" 
                   alt="" 
                 />
 
-                {/* HUD Overlay Elements */}
+                {/* Overlay HUD Elements */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none z-10">
                    <div className={`w-[85%] h-[85%] border border-${theme.accent} rounded-full border-dashed animate-pulse-slow`}></div>
                    <div className={`absolute w-full h-[0.5px] bg-${theme.accent}`}></div>
                    <div className={`absolute h-full w-[0.5px] bg-${theme.accent}`}></div>
                    
-                   {/* HUD Markers */}
+                   {/* HUD Text Indicators */}
                    <div className="absolute top-4 left-4 text-[8px] font-black text-white/50 tracking-widest uppercase">Alt: 32000ft</div>
                    <div className="absolute bottom-4 right-4 text-[8px] font-black text-white/50 tracking-widest uppercase">HDG: 275°</div>
                 </div>
@@ -203,11 +204,11 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
              {/* Bandeau Projet / ID */}
              <div className={`w-[94%] -mt-3 self-center h-5 ${theme.bg} dark:bg-slate-800 rounded-sm shadow-md border border-white/40 flex items-center justify-center px-4 relative z-30`}>
                 <p className="text-[8px] font-black italic text-white dark:text-sky-300 uppercase tracking-[0.25em]">
-                   {member.id.toUpperCase()} // AIRBUS SQUADRON // SECTOR 116
+                   {member.id.toUpperCase()} // AIRBUS UNIT // SECTOR 116
                 </p>
              </div>
 
-             {/* Skills Area (Attacks - 4 compétences, police réduite) */}
+             {/* Skills Area (Attacks - 4 compétences avec police réduite) */}
              <div className="flex-1 flex flex-col justify-center gap-2 mt-4 px-1">
                 {displayedSkills.map((skill, idx) => (
                   <div key={idx} className="flex items-center border-b border-slate-200 dark:border-slate-800 pb-1.5 last:border-0">
@@ -218,7 +219,7 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
                     </div>
                     <div className="flex-1 min-w-0">
                        <h4 className="text-[10px] font-black text-slate-800 dark:text-white uppercase tracking-tighter truncate">{skill.name} Blast</h4>
-                       <p className="text-[7px] text-slate-500 dark:text-slate-400 leading-tight italic truncate">Mise en œuvre opérationnelle : Rang {skill.level}.</p>
+                       <p className="text-[7px] text-slate-500 dark:text-slate-400 leading-tight italic truncate">Mise en œuvre : Niveau {skill.level}.</p>
                     </div>
                     <span className="text-[11px] font-black text-slate-800 dark:text-white ml-2">{skill.level * 20}</span>
                   </div>
@@ -228,17 +229,17 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
              {/* Footer : Stats TCG */}
              <div className="mt-3 pt-2 border-t border-slate-300 dark:border-slate-800 grid grid-cols-3 text-center gap-2">
                 <div>
-                   <p className="text-[6px] font-black uppercase text-slate-400 tracking-tighter">Weakness</p>
+                   <p className="text-[6px] font-black uppercase text-slate-400">Weakness</p>
                    <i className="fa-solid fa-mug-hot text-amber-900 text-[11px] mt-1"></i>
                 </div>
                 <div>
-                   <p className="text-[6px] font-black uppercase text-slate-400 tracking-tighter">Resistance</p>
+                   <p className="text-[6px] font-black uppercase text-slate-400">Resistance</p>
                    <div className="flex justify-center gap-1.5 mt-1">
                       {member.certifications?.slice(0, 2).map((c, i) => <i key={i} className={`${getProviderIcon(c.provider)} text-[10px]`}></i>)}
                    </div>
                 </div>
                 <div>
-                   <p className="text-[6px] font-black uppercase text-slate-400 tracking-tighter">Retreat</p>
+                   <p className="text-[6px] font-black uppercase text-slate-400">Retreat</p>
                    <div className="flex justify-center gap-1 mt-1">
                       <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
                       <div className="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
@@ -248,7 +249,7 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
 
              {/* Final Line Footer */}
              <div className="mt-2.5 flex justify-between items-end px-1">
-                <p className="text-[5px] font-bold text-slate-400 italic uppercase">Illus. SkyCenter Studio © 2025 Airbus Corp. 142/150 ★ RARE</p>
+                <p className="text-[5px] font-bold text-slate-400 italic uppercase">Illus. SkyCenter Studio © 2025 Airbus Squadron. RARE 1ST ED.</p>
                 <div className="px-2 h-3.5 bg-slate-200 dark:bg-slate-800 rounded-sm flex items-center justify-center border border-black/10">
                    <span className="text-[5px] font-black text-slate-500 tracking-widest">{member.id}</span>
                 </div>
@@ -266,7 +267,7 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
             ${copyStatus === 'success' ? 'bg-emerald-500 text-white opacity-100' : 
               copyStatus === 'error' ? 'bg-red-500 text-white opacity-100' : 
               'bg-white/50 dark:bg-slate-800/50 text-gray-400 hover:text-sky-500 opacity-0 group-hover:opacity-100'}`}
-          title="Générer ta carte"
+          title="Générer Carte TCG"
         >
           {copyStatus === 'loading' ? <i className="fa-solid fa-spinner fa-spin text-xs"></i> :
            copyStatus === 'success' ? <i className="fa-solid fa-check"></i> :
@@ -278,7 +279,7 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
         </button>
       </div>
       
-      {/* VUE CARTE STANDARD (Apparence du Trombinoscope) */}
+      {/* VUE CARTE STANDARD */}
       <div className="relative w-full flex justify-center mb-6">
         <div className="absolute left-0 top-2 grid grid-rows-4 grid-flow-col gap-2">
           {member.certifications?.map((cert, i) => (
