@@ -107,7 +107,7 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
             className="px-4 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-sky-500 hover:text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] transition-all border border-transparent"
           >
             <i className="fa-solid fa-plus mr-2"></i>
-            Nouveau Bureau
+            Nouvelle Flotte
           </button>
         </div>
         <div className="flex bg-gray-100 dark:bg-slate-800 p-1.5 rounded-xl">

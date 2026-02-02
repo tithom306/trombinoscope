@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StaffMember, Role, DayOfWeek, Office, Certification, Project } from '../types';
 import { GoogleGenAI, Type } from "@google/genai";
 
@@ -45,6 +45,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, proj
   const [newCertName, setNewCertName] = useState('');
   const [newCertProvider, setNewCertProvider] = useState('AWS');
   const [activeGuideIndex, setActiveGuideIndex] = useState<number | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   // Quiz States
   const [isQuizMode, setIsQuizMode] = useState(false);
@@ -54,6 +55,13 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, proj
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
+
+  useEffect(() => {
+    // Si c'est un nouveau membre (nom par défaut), on focus le champ nom
+    if (member.name === "Nouveau Membre" && nameInputRef.current) {
+      nameInputRef.current.select();
+    }
+  }, []);
 
   const getProviderIcon = (provider: string) => {
     const p = provider.toLowerCase();
@@ -303,9 +311,9 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, proj
                  onError={(e) => (e.currentTarget.src = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y")}
                />
             </div>
-            <div>
-              <h2 className="text-2xl font-black text-gray-900 dark:text-white leading-tight">
-                Modifier <span className="text-sky-600 dark:text-sky-400">{member.name}</span>
+            <div className="min-w-0">
+              <h2 className="text-2xl font-black text-gray-900 dark:text-white leading-tight truncate">
+                Dossier <span className="text-sky-600 dark:text-sky-400">{formData.name}</span>
               </h2>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-[10px] text-sky-500 uppercase tracking-widest font-black">{formData.role}</span>
@@ -313,7 +321,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, proj
               </div>
             </div>
           </div>
-          <button onClick={onClose} className="w-12 h-12 rounded-2xl hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-all flex items-center justify-center">
+          <button onClick={onClose} className="w-12 h-12 rounded-2xl hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-all flex items-center justify-center flex-shrink-0">
             <i className="fa-solid fa-xmark text-xl"></i>
           </button>
         </div>
@@ -324,7 +332,18 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, proj
              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-sky-500 mb-6 flex items-center gap-2">
               <i className="fa-solid fa-id-card-clip"></i> Informations Générales
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-slate-500 ml-1">Nom Complet</label>
+                <input 
+                  ref={nameInputRef}
+                  type="text" 
+                  value={formData.name} 
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full bg-white dark:bg-slate-800 border-2 border-sky-100 dark:border-sky-900/30 rounded-2xl px-5 py-4 text-sm focus:ring-2 focus:ring-sky-500 transition-all dark:text-white font-bold"
+                  placeholder="Ex: Jean Dupont"
+                />
+              </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-slate-500 ml-1">Affectation Projet</label>
                 <select 
