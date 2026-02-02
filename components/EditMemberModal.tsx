@@ -1,13 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
-import { StaffMember, Role, DayOfWeek, Office, Certification } from '../types';
+import { StaffMember, Role, DayOfWeek, Office, Certification, Project } from '../types';
 import { GoogleGenAI, Type } from "@google/genai";
 
 interface EditMemberModalProps {
   member: StaffMember;
   offices: Office[];
+  projects: Project[];
+  currentProjectId: string;
   onClose: () => void;
-  onSave: (updatedMember: StaffMember) => void;
+  onSave: (updatedMember: StaffMember, targetProjectId: string) => void;
 }
 
 interface QuizOption {
@@ -36,8 +38,9 @@ const ROLE_SKILLS_SUGGESTIONS: Record<Role, string[]> = {
   [Role.MANAGER]: ["Leadership", "Gestion Agile (Scrum)", "Planification Stratégique", "Gestion des Risques", "Coaching d'Équipe", "Recrutement"]
 };
 
-const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, onClose, onSave }) => {
+const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, projects, currentProjectId, onClose, onSave }) => {
   const [formData, setFormData] = useState<StaffMember>({ ...member, certifications: member.certifications || [] });
+  const [targetProjectId, setTargetProjectId] = useState(currentProjectId);
   const [newSkillName, setNewSkillName] = useState('');
   const [newCertName, setNewCertName] = useState('');
   const [newCertProvider, setNewCertProvider] = useState('AWS');
@@ -52,7 +55,6 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, onCl
   const [answers, setAnswers] = useState<number[]>([]);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
 
-  // Helper pour les icônes de certifs
   const getProviderIcon = (provider: string) => {
     const p = provider.toLowerCase();
     if (p.includes('aws')) return 'fa-brands fa-aws text-orange-400';
@@ -222,7 +224,6 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, onCl
     });
   };
 
-  // Filtrer les suggestions pour ne pas proposer ce que l'utilisateur a déjà
   const availableSuggestions = ROLE_SKILLS_SUGGESTIONS[formData.role].filter(
     suggested => !formData.skills.some(s => s.name.toLowerCase() === suggested.toLowerCase())
   );
@@ -323,7 +324,17 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, onCl
              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-sky-500 mb-6 flex items-center gap-2">
               <i className="fa-solid fa-id-card-clip"></i> Informations Générales
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-slate-500 ml-1">Affectation Projet</label>
+                <select 
+                  value={targetProjectId} 
+                  onChange={(e) => setTargetProjectId(e.target.value)}
+                  className="w-full bg-sky-50 dark:bg-slate-800 border border-sky-100 dark:border-sky-900/30 rounded-2xl px-5 py-4 text-sm focus:ring-2 focus:ring-sky-500 transition-all dark:text-white font-bold"
+                >
+                  {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+                </select>
+              </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-slate-500 ml-1">Rôle métier</label>
                 <select 
@@ -487,7 +498,7 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, onCl
 
         <div className="p-8 border-t border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/20 flex justify-end gap-4">
           <button onClick={onClose} className="px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all">Annuler</button>
-          <button onClick={() => onSave(formData)} className="px-12 py-4 rounded-xl bg-sky-600 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-sky-600/30 dark:shadow-none hover:bg-sky-700 hover:scale-105 active:scale-95 transition-all">Sauvegarder</button>
+          <button onClick={() => onSave(formData, targetProjectId)} className="px-12 py-4 rounded-xl bg-sky-600 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-sky-600/30 dark:shadow-none hover:bg-sky-700 hover:scale-105 active:scale-95 transition-all">Sauvegarder</button>
         </div>
       </div>
     </div>

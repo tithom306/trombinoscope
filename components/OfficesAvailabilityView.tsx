@@ -7,11 +7,12 @@ interface OfficesAvailabilityViewProps {
   projects: Project[];
   onUpdateAssignment: (memberId: string, day: DayOfWeek, assignment: string | null) => void;
   onUpdateAssignments: (updates: { memberId: string, day: DayOfWeek, assignment: string | null }[]) => void;
+  onAddOffice: () => void;
 }
 
 const DAYS: DayOfWeek[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 
-const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offices, projects, onUpdateAssignment, onUpdateAssignments }) => {
+const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offices, projects, onUpdateAssignment, onUpdateAssignments, onAddOffice }) => {
   const [selectedDay, setSelectedDay] = useState<DayOfWeek>('Lundi');
   const [activeStationEditing, setActiveStationEditing] = useState<{office: Office, station: string} | null>(null);
   const [completingOffice, setCompletingOffice] = useState<Office | null>(null);
@@ -96,9 +97,18 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
   return (
     <div className="space-y-12 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 rounded-2xl bg-white dark:bg-slate-900 shadow-sm border border-gray-100 dark:border-slate-800">
-        <div>
-          <h2 className="text-xl font-black text-gray-900 dark:text-white leading-tight">Ravitaillement Flotte</h2>
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-1">Sélecteur temporel</p>
+        <div className="flex items-center gap-6">
+          <div>
+            <h2 className="text-xl font-black text-gray-900 dark:text-white leading-tight">Ravitaillement Flotte</h2>
+            <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-1">Sélecteur temporel</p>
+          </div>
+          <button 
+            onClick={onAddOffice}
+            className="px-4 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-sky-500 hover:text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] transition-all border border-transparent"
+          >
+            <i className="fa-solid fa-plus mr-2"></i>
+            Nouveau Bureau
+          </button>
         </div>
         <div className="flex bg-gray-100 dark:bg-slate-800 p-1.5 rounded-xl">
           {DAYS.map(day => (
