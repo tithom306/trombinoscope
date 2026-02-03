@@ -7,12 +7,13 @@ import * as htmlToImage from 'html-to-image';
 interface StaffCardProps {
   member: StaffMember;
   viewMode: 'talents' | 'planning';
+  isEditable: boolean;
   onEdit: () => void;
 }
 
 const DAYS: DayOfWeek[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 
-const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
+const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, isEditable, onEdit }) => {
   const [imgError, setImgError] = useState(false);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const compactCaptureRef = useRef<HTMLDivElement>(null);
@@ -68,7 +69,6 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
 
       console.log("Démarrage de la capture TCG pour:", member.name);
       
-      // On tente d'abord un rendu SVG pour plus de robustesse, puis on convertit en PNG
       const dataUrl = await htmlToImage.toPng(compactCaptureRef.current, options);
       
       const res = await fetch(dataUrl);
@@ -138,7 +138,9 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, onEdit }) => {
         <button onClick={handleCopyAsImage} disabled={copyStatus === 'loading'} className={`action-button w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-lg ${copyStatus === 'success' ? 'bg-emerald-500 text-white opacity-100' : 'bg-white/50 dark:bg-slate-800/50 text-gray-400 hover:text-sky-500 opacity-0 group-hover:opacity-100'}`}>
           {copyStatus === 'loading' ? <i className="fa-solid fa-spinner fa-spin text-xs"></i> : copyStatus === 'success' ? <i className="fa-solid fa-check"></i> : <i className="fa-solid fa-fire-flame-curved"></i>}
         </button>
-        <button onClick={onEdit} className="action-button w-10 h-10 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md flex items-center justify-center text-gray-400 hover:text-sky-500 transition-all opacity-0 group-hover:opacity-100 shadow-lg"><i className="fa-solid fa-sliders"></i></button>
+        {isEditable && (
+          <button onClick={onEdit} className="action-button w-10 h-10 rounded-xl bg-white/50 dark:bg-slate-800/50 backdrop-blur-md flex items-center justify-center text-gray-400 hover:text-sky-500 transition-all opacity-0 group-hover:opacity-100 shadow-lg"><i className="fa-solid fa-sliders"></i></button>
+        )}
       </div>
       
       <div className="relative w-full flex justify-center mb-6">

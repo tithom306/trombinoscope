@@ -6,11 +6,12 @@ import StaffCard from './StaffCard';
 interface ProjectSectionProps {
   project: Project;
   viewMode: 'talents' | 'planning';
+  isEditable: boolean;
   onEditMember: (member: StaffMember) => void;
   onAddMember: () => void;
 }
 
-const ProjectSection: React.FC<ProjectSectionProps> = ({ project, viewMode, onEditMember, onAddMember }) => {
+const ProjectSection: React.FC<ProjectSectionProps> = ({ project, viewMode, isEditable, onEditMember, onAddMember }) => {
   return (
     <div className="mb-12">
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -24,14 +25,16 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ project, viewMode, onEd
           </p>
         </div>
         
-        <button 
-          onClick={onAddMember}
-          className="flex items-center gap-2 px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-sky-500/20 transition-all hover:scale-105"
-          title="Ajouter un collaborateur à ce projet"
-        >
-          <i className="fa-solid fa-plus"></i>
-          <span>Engager</span>
-        </button>
+        {isEditable && (
+          <button 
+            onClick={onAddMember}
+            className="flex items-center gap-2 px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-sky-500/20 transition-all hover:scale-105"
+            title="Ajouter un collaborateur à ce projet"
+          >
+            <i className="fa-solid fa-plus"></i>
+            <span>Engager</span>
+          </button>
+        )}
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -40,6 +43,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ project, viewMode, onEd
             key={member.id} 
             member={member} 
             viewMode={viewMode} 
+            isEditable={isEditable}
             onEdit={() => onEditMember(member)}
           />
         ))}

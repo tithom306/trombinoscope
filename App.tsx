@@ -20,6 +20,8 @@ const App: React.FC = () => {
   const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
+  const isEditable = !!fileHandle;
+
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem("team_canvas_theme");
     return saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -124,6 +126,7 @@ const App: React.FC = () => {
   };
 
   const handleAddProject = (name: string, description: string) => {
+    if (!isEditable) return;
     const newProject: Project = { id: `p-${Date.now()}`, name, description, members: [] };
     const newProjects = [...projects, newProject];
     setProjects(newProjects);
@@ -132,6 +135,7 @@ const App: React.FC = () => {
   };
 
   const handleAddMember = (projectId: string) => {
+    if (!isEditable) return;
     const newMember: StaffMember = {
       id: `m-${Date.now()}`,
       name: "Nouveau Membre",
@@ -145,20 +149,19 @@ const App: React.FC = () => {
   };
 
   const handleUpdateMember = (updatedMember: StaffMember, targetProjectId: string, isNew?: boolean) => {
+    if (!isEditable) return;
     const sourceProjectId = editingMember?.projectId;
     let newProjects = [...projects];
 
     if (isNew) {
       newProjects = newProjects.map(p => p.id === targetProjectId ? { ...p, members: [...p.members, updatedMember] } : p);
     } else if (sourceProjectId && sourceProjectId !== targetProjectId) {
-      // Transfert : retirer du projet source et ajouter au projet cible
       newProjects = newProjects.map(p => {
         if (p.id === sourceProjectId) return { ...p, members: p.members.filter(m => m.id !== updatedMember.id) };
         if (p.id === targetProjectId) return { ...p, members: [...p.members, updatedMember] };
         return p;
       });
     } else {
-      // Mise à jour classique
       newProjects = newProjects.map(p => p.id === targetProjectId ? { ...p, members: p.members.map(m => m.id === updatedMember.id ? updatedMember : m) } : p);
     }
 
@@ -168,6 +171,7 @@ const App: React.FC = () => {
   };
 
   const handleAddOffice = (name: string, stationCount: number) => {
+    if (!isEditable) return;
     const newOffice: Office = {
       id: `off-${Date.now()}`,
       name,
@@ -180,6 +184,7 @@ const App: React.FC = () => {
   };
 
   const handleBulkAssignmentUpdate = (updates: { memberId: string; day: DayOfWeek; assignment: string | null }[]) => {
+    if (!isEditable) return;
     setProjects((prevProjects) => {
       let currentProjects = [...prevProjects];
       updates.forEach(({ memberId, day, assignment }) => {
@@ -232,10 +237,15 @@ const App: React.FC = () => {
               <h1 className="text-lg font-black leading-none">{appName}</h1>
               <div className="flex items-center gap-2 mt-1">
                 <p className="text-[10px] font-bold text-sky-500 tracking-widest uppercase">Fleet Management</p>
-                {fileHandle && (
+                {fileHandle ? (
                   <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20">
                     <div className={`w-1.5 h-1.5 rounded-full ${isSaving ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`}></div>
                     <span className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">Live Sync</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/10 rounded-full border border-amber-500/20">
+                    <i className="fa-solid fa-lock text-[8px] text-amber-600"></i>
+                    <span className="text-[8px] font-black text-amber-600 uppercase tracking-tighter">Lecture Seule</span>
                   </div>
                 )}
               </div>
@@ -251,13 +261,20 @@ const App: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <button onClick={handleLinkFile} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${fileHandle ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white'}`} title="Lier le JSON local"><i className={`fa-solid ${fileHandle ? 'fa-hdd' : 'fa-link'}`}></i></button>
+            <button onClick={handleLinkFile} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${fileHandle ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white'}`} title={fileHandle ? "Fichier lié" : "Lier un fichier JSON pour éditer"}><i className={`fa-solid ${fileHandle ? 'fa-hdd' : 'fa-link'}`}></i></button>
             <button onClick={() => setIsDarkMode(!isDarkMode)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white transition-all"><i className={`fa-solid ${isDarkMode ? "fa-sun" : "fa-moon"}`}></i></button>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-10">
+        {!isEditable && (
+          <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-2xl flex items-center gap-4 animate-in slide-in-from-top-4">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-amber-500/20"><i className="fa-solid fa-info-circle"></i></div>
+            <p className="text-xs font-bold text-amber-700 dark:text-amber-400">Pour modifier les collaborateurs ou le plan de vol, vous devez d'abord lier un fichier JSON local à l'aide du bouton <i className="fa-solid fa-link px-1"></i> en haut à droite.</p>
+          </div>
+        )}
+
         {viewMode !== "offices" && (
           <div className="mb-10 flex flex-col lg:flex-row gap-4 items-stretch">
             <div className="relative flex-1 group">
@@ -267,16 +284,27 @@ const App: React.FC = () => {
             <div className="flex bg-white dark:bg-slate-900 p-1.5 rounded-2xl shadow-xl shadow-sky-500/5 items-center overflow-x-auto min-w-fit">
               <button onClick={() => setSelectedRole("All")} className={`px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${selectedRole === "All" ? "bg-sky-500 text-white" : "text-gray-400 hover:text-sky-500"}`}>Tous</button>
               {Object.values(Role).map(role => <button key={role} onClick={() => setSelectedRole(role)} className={`px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${selectedRole === role ? "bg-sky-500 text-white" : "text-gray-400 hover:text-sky-500"}`}>{role}</button>)}
-              <div className="w-px h-8 bg-gray-100 dark:bg-slate-800 mx-2"></div>
-              <button onClick={() => setShowAddProjectModal(true)} className="px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-sky-500 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition-all flex items-center gap-2"><i className="fa-solid fa-folder-plus"></i> Nouveau Projet</button>
+              {isEditable && (
+                <>
+                  <div className="w-px h-8 bg-gray-100 dark:bg-slate-800 mx-2"></div>
+                  <button onClick={() => setShowAddProjectModal(true)} className="px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-sky-500 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition-all flex items-center gap-2"><i className="fa-solid fa-folder-plus"></i> Nouveau Projet</button>
+                </>
+              )}
             </div>
           </div>
         )}
 
         {viewMode === "offices" ? (
-          <OfficesAvailabilityView offices={offices} projects={projects} onUpdateAssignment={(id, d, a) => handleBulkAssignmentUpdate([{ memberId: id, day: d, assignment: a }])} onUpdateAssignments={handleBulkAssignmentUpdate} onAddOffice={() => setShowAddOfficeModal(true)} />
+          <OfficesAvailabilityView 
+            offices={offices} 
+            projects={projects} 
+            isEditable={isEditable}
+            onUpdateAssignment={(id, d, a) => handleBulkAssignmentUpdate([{ memberId: id, day: d, assignment: a }])} 
+            onUpdateAssignments={handleBulkAssignmentUpdate} 
+            onAddOffice={() => setShowAddOfficeModal(true)} 
+          />
         ) : (
-          filteredProjects.map(project => <ProjectSection key={project.id} project={project} viewMode={viewMode} onEditMember={(m) => setEditingMember({ member: m, projectId: project.id })} onAddMember={() => handleAddMember(project.id)} />)
+          filteredProjects.map(project => <ProjectSection key={project.id} project={project} viewMode={viewMode} isEditable={isEditable} onEditMember={(m) => setEditingMember({ member: m, projectId: project.id })} onAddMember={() => handleAddMember(project.id)} />)
         )}
       </main>
 
@@ -292,7 +320,7 @@ const App: React.FC = () => {
       )}
 
       {/* MODAL AJOUT BUREAU */}
-      {showAddOfficeModal && (
+      {showAddOfficeModal && isEditable && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in">
           <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl p-8 border border-sky-100 dark:border-sky-900/30">
             <h3 className="text-xl font-black mb-6 dark:text-white">Nouvel Appareil / Bureau</h3>
@@ -306,7 +334,7 @@ const App: React.FC = () => {
       )}
 
       {/* MODAL AJOUT PROJET */}
-      {showAddProjectModal && (
+      {showAddProjectModal && isEditable && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in">
           <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl p-8 border border-sky-100 dark:border-sky-900/30">
             <h3 className="text-xl font-black mb-6 dark:text-white">Nouvelle Escadrille</h3>

@@ -5,6 +5,7 @@ import { Office, Project, StaffMember, DayOfWeek, Role } from '../types';
 interface OfficesAvailabilityViewProps {
   offices: Office[];
   projects: Project[];
+  isEditable: boolean;
   onUpdateAssignment: (memberId: string, day: DayOfWeek, assignment: string | null) => void;
   onUpdateAssignments: (updates: { memberId: string, day: DayOfWeek, assignment: string | null }[]) => void;
   onAddOffice: () => void;
@@ -12,7 +13,7 @@ interface OfficesAvailabilityViewProps {
 
 const DAYS: DayOfWeek[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 
-const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offices, projects, onUpdateAssignment, onUpdateAssignments, onAddOffice }) => {
+const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offices, projects, isEditable, onUpdateAssignment, onUpdateAssignments, onAddOffice }) => {
   const [selectedDay, setSelectedDay] = useState<DayOfWeek>('Lundi');
   const [activeStationEditing, setActiveStationEditing] = useState<{office: Office, station: string} | null>(null);
   const [completingOffice, setCompletingOffice] = useState<Office | null>(null);
@@ -64,7 +65,7 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
   };
 
   const handleManualAssign = (memberId: string | null) => {
-    if (!activeStationEditing) return;
+    if (!activeStationEditing || !isEditable) return;
     
     if (memberId === null) {
       const stationKey = `${activeStationEditing.office.name} - ${activeStationEditing.station}`;
@@ -82,7 +83,7 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
   };
 
   const handleAutoFill = (projectId: string) => {
-    if (!completingOffice) return;
+    if (!completingOffice || !isEditable) return;
     const availableMembers = unassignedByProject[projectId].members;
     const emptyStations = completingOffice.stations.filter(s => !occupationMap[`${completingOffice.name} - ${s}`]);
     const updates = availableMembers.slice(0, emptyStations.length).map((member, index) => ({
@@ -102,13 +103,15 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
             <h2 className="text-xl font-black text-gray-900 dark:text-white leading-tight">Ravitaillement Flotte</h2>
             <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold mt-1">Sélecteur temporel</p>
           </div>
-          <button 
-            onClick={onAddOffice}
-            className="px-4 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-sky-500 hover:text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] transition-all border border-transparent"
-          >
-            <i className="fa-solid fa-plus mr-2"></i>
-            Nouvelle Flotte
-          </button>
+          {isEditable && (
+            <button 
+              onClick={onAddOffice}
+              className="px-4 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-sky-500 hover:text-white rounded-xl text-[9px] font-black uppercase tracking-[0.2em] transition-all border border-transparent"
+            >
+              <i className="fa-solid fa-plus mr-2"></i>
+              Nouvelle Flotte
+            </button>
+          )}
         </div>
         <div className="flex bg-gray-100 dark:bg-slate-800 p-1.5 rounded-xl">
           {DAYS.map(day => (
@@ -127,14 +130,19 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-sky-500"><i className="fa-solid fa-plane-arrival text-xl"></i></div>
                   <div><h3 className="text-lg font-black">{office.name}</h3><p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{office.stations.length} Emplacements</p></div>
                 </div>
-                {emptyCount > 0 && <button onClick={() => setCompletingOffice(office)} className="px-4 py-2 rounded-xl text-[9px] font-black uppercase text-white shadow-lg bg-sky-500">Embarquer ({emptyCount})</button>}
+                {isEditable && emptyCount > 0 && <button onClick={() => setCompletingOffice(office)} className="px-4 py-2 rounded-xl text-[9px] font-black uppercase text-white shadow-lg bg-sky-500">Embarquer ({emptyCount})</button>}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {office.stations.map(station => {
                   const occupant = occupationMap[`${office.name} - ${station}`];
                   const isOccupied = !!occupant;
                   return (
-                    <button key={station} onClick={() => setActiveStationEditing({office, station})} className={`p-4 rounded-2xl border flex items-center gap-5 text-left transition-all ${isOccupied ? 'bg-white dark:bg-slate-800 border-sky-50 dark:border-sky-900/30 shadow-sm' : 'bg-gray-50/50 dark:bg-black/20 border-dashed border-gray-200 dark:border-slate-800'}`}>
+                    <button 
+                      key={station} 
+                      disabled={!isEditable}
+                      onClick={() => setActiveStationEditing({office, station})} 
+                      className={`p-4 rounded-2xl border flex items-center gap-5 text-left transition-all ${isOccupied ? 'bg-white dark:bg-slate-800 border-sky-50 dark:border-sky-900/30 shadow-sm' : 'bg-gray-50/50 dark:bg-black/20 border-dashed border-gray-200 dark:border-slate-800'} ${!isEditable ? 'cursor-default' : ''}`}
+                    >
                       {isOccupied ? (
                         <>
                           <div className="relative flex-shrink-0">
@@ -161,7 +169,7 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
                         </>
                       ) : (
                         <>
-                          <div className="w-16 h-16 bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-300 rounded-xl"><i className="fa-solid fa-plus text-sm"></i></div>
+                          <div className="w-16 h-16 bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-300 rounded-xl"><i className={`fa-solid ${isEditable ? 'fa-plus' : 'fa-ban'} text-sm`}></i></div>
                           <div className="flex-1"><p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">{station}</p><span className="text-[9px] font-bold text-emerald-500 uppercase">Vacant</span></div>
                         </>
                       )}
@@ -174,7 +182,7 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
         })}
       </div>
 
-      {activeStationEditing && (
+      {activeStationEditing && isEditable && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in">
           <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-sky-100 dark:border-sky-900/30">
             <div className="p-8 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/20">
@@ -231,7 +239,7 @@ const OfficesAvailabilityView: React.FC<OfficesAvailabilityViewProps> = ({ offic
         </div>
       )}
 
-      {completingOffice && (
+      {completingOffice && isEditable && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/70 backdrop-blur-md p-4 animate-in fade-in">
           <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl border border-sky-100 dark:border-sky-900/20">
             <div className="p-8 border-b bg-sky-500 text-white">
