@@ -52,4 +52,43 @@ export interface AppMetadata {
   description: string;
   projects: Project[];
   offices: Office[];
+  kebabSessions?: KebabSession[];
+}
+
+export enum KebabSauce {
+  BLANCHE = 'Blanche',
+  ALGERIENNE = 'Algérienne',
+  SAMOURAI = 'Samouraï',
+  HARISSA = 'Harissa',
+  MAYONNAISE = 'Mayonnaise',
+  KETCHUP = 'Ketchup',
+  ANDALOUSE = 'Andalouse',
+  CURRY = 'Curry'
+}
+
+export enum KebabIngredient {
+  SALADE = 'Salade',
+  TOMATE = 'Tomate',
+  OIGNON = 'Oignon',
+  OLIVE = 'Olive',
+  FETA = 'Feta',
+  CHOUX = 'Choux',
+  FRITES_EXTERIEUR = 'Frites à l\'extérieur'
+}
+
+export interface KebabOrder {
+  id: string;
+  memberId: string;
+  memberName: string;
+  sauce: KebabSauce;
+  ingredients: KebabIngredient[];
+  comment?: string;
+  timestamp: string;
+}
+
+export interface KebabSession {
+  id: string;
+  date: string;
+  status: 'open' | 'closed';
+  orders: KebabOrder[];
 }

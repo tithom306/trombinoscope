@@ -3,15 +3,18 @@ import React, { useEffect, useMemo, useState } from "react";
 import EditMemberModal from "./components/EditMemberModal";
 import OfficesAvailabilityView from "./components/OfficesAvailabilityView";
 import ProjectSection from "./components/ProjectSection";
-import { DayOfWeek, Office, Project, Role, StaffMember } from "./types";
+import KebabManager from "./components/KebabManager";
+import { DayOfWeek, Office, Project, Role, StaffMember, KebabSession, KebabOrder, Skill } from "./types";
+import Papa from 'papaparse';
 
 const App: React.FC = () => {
   const [appName, setAppName] = useState("SkyCenter");
   const [projects, setProjects] = useState<Project[]>([]);
   const [offices, setOffices] = useState<Office[]>([]);
+  const [kebabSessions, setKebabSessions] = useState<KebabSession[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<Role | "All">("All");
-  const [viewMode, setViewMode] = useState<"talents" | "planning" | "offices">("talents");
+  const [viewMode, setViewMode] = useState<"talents" | "planning" | "offices" | "kebab">("talents");
   const [editingMember, setEditingMember] = useState<{ member: StaffMember; projectId: string; isNew?: boolean } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddOfficeModal, setShowAddOfficeModal] = useState(false);
@@ -40,6 +43,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const savedProjects = localStorage.getItem("team_canvas_data_projects");
     const savedOffices = localStorage.getItem("team_canvas_data_offices");
+    const savedKebab = localStorage.getItem("team_canvas_data_kebab");
     const savedName = localStorage.getItem("team_canvas_data_name");
     const savedVersion = localStorage.getItem("team_canvas_data_version");
 
@@ -50,6 +54,7 @@ const App: React.FC = () => {
         if (savedProjects && savedOffices && savedVersion === currentVersion) {
           setProjects(JSON.parse(savedProjects));
           setOffices(JSON.parse(savedOffices));
+          setKebabSessions(savedKebab ? JSON.parse(savedKebab) : (data.kebabSessions || []));
           setAppName(savedName || data.name || "SkyCenter");
           setIsLoading(false);
         } else {
@@ -64,14 +69,16 @@ const App: React.FC = () => {
   const loadFreshData = (data: any) => {
     setProjects(data.projects);
     setOffices(data.offices);
+    setKebabSessions(data.kebabSessions || []);
     setAppName(data.name || "SkyCenter");
-    saveToLocalStorage(data.projects, data.offices, data.name, data.version || "1.0");
+    saveToLocalStorage(data.projects, data.offices, data.kebabSessions || [], data.name, data.version || "1.0");
     setIsLoading(false);
   };
 
-  const saveToLocalStorage = (projData: Project[], offData: Office[], name?: string, version?: string) => {
+  const saveToLocalStorage = (projData: Project[], offData: Office[], kebabData: KebabSession[], name?: string, version?: string) => {
     localStorage.setItem("team_canvas_data_projects", JSON.stringify(projData));
     localStorage.setItem("team_canvas_data_offices", JSON.stringify(offData));
+    localStorage.setItem("team_canvas_data_kebab", JSON.stringify(kebabData));
     if (name) localStorage.setItem("team_canvas_data_name", name);
     if (version) localStorage.setItem("team_canvas_data_version", version);
   };
@@ -95,6 +102,7 @@ const App: React.FC = () => {
         version: localStorage.getItem("team_canvas_data_version") || "3.0",
         projects: projects,
         offices: offices,
+        kebabSessions: kebabSessions,
         description: "Sauvegarde synchronisée"
       };
       await writable.write(JSON.stringify(dataToSave, null, 2));
@@ -107,21 +115,93 @@ const App: React.FC = () => {
   };
 
   const handleLinkFile = async () => {
+    const pickerOptions = {
+      types: [
+        {
+          description: 'Fichiers de données (JSON, CSV)',
+          accept: {
+            'application/json': ['.json'],
+            'text/csv': ['.csv']
+          }
+        }
+      ],
+      multiple: false
+    };
+
     try {
-      const [handle] = await (window as any).showOpenFilePicker({
-        types: [{ description: 'JSON Files', accept: { 'application/json': ['.json'] } }],
-        multiple: false
-      });
+      if (!(window as any).showOpenFilePicker) {
+        // Fallback pour les navigateurs ne supportant pas l'API File System Access
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json,.csv';
+        input.onchange = async (e: any) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const content = await file.text();
+          processFileContent(file.name, content);
+        };
+        input.click();
+        return;
+      }
+
+      const [handle] = await (window as any).showOpenFilePicker(pickerOptions);
       const file = await handle.getFile();
       const content = await file.text();
-      const data = JSON.parse(content);
       setFileHandle(handle);
-      setAppName(data.name || "SkyCenter");
-      setProjects(data.projects);
-      setOffices(data.offices);
-      saveToLocalStorage(data.projects, data.offices, data.name, data.version || "1.0");
+      processFileContent(file.name, content);
     } catch (err) {
-      console.log("Liaison annulée");
+      console.log("Liaison annulée ou erreur:", err);
+    }
+  };
+
+  const processFileContent = (fileName: string, content: string) => {
+    if (fileName.endsWith('.json')) {
+      try {
+        const data = JSON.parse(content);
+        setAppName(data.name || "SkyCenter");
+        setProjects(data.projects || []);
+        setOffices(data.offices || []);
+        setKebabSessions(data.kebabSessions || []);
+        saveToLocalStorage(data.projects || [], data.offices || [], data.kebabSessions || [], data.name, data.version || "1.0");
+      } catch (e) {
+        alert("Erreur lors de la lecture du JSON");
+      }
+    } else if (fileName.endsWith('.csv')) {
+      Papa.parse(content, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results: Papa.ParseResult<any>) => {
+          const importedMembers: StaffMember[] = results.data.map((row: any, index: number) => {
+            // Mapping basique des colonnes CSV vers StaffMember
+            const skills: Skill[] = (row.skills || row.Compétences || "")
+              .split(',')
+              .filter((s: string) => s.trim())
+              .map((s: string) => ({ name: s.trim(), level: 3 }));
+
+            return {
+              id: `csv-${Date.now()}-${index}`,
+              name: row.name || row.Nom || "Inconnu",
+              role: (row.role || row.Rôle || Role.DEVELOPER) as Role,
+              avatar: row.avatar || `https://i.pravatar.cc/150?u=${index}`,
+              email: row.email || "",
+              skills: skills,
+              presence: { schedule: {} }
+            };
+          });
+
+          const newProject: Project = {
+            id: `p-csv-${Date.now()}`,
+            name: "Import CSV",
+            description: `Membres importés de ${fileName}`,
+            members: importedMembers
+          };
+
+          const newProjects = [...projects, newProject];
+          setProjects(newProjects);
+          saveToLocalStorage(newProjects, offices, kebabSessions, appName);
+          alert(`${importedMembers.length} membres importés avec succès !`);
+        }
+      });
     }
   };
 
@@ -130,7 +210,7 @@ const App: React.FC = () => {
     const newProject: Project = { id: `p-${Date.now()}`, name, description, members: [] };
     const newProjects = [...projects, newProject];
     setProjects(newProjects);
-    saveToLocalStorage(newProjects, offices, appName);
+    saveToLocalStorage(newProjects, offices, kebabSessions, appName);
     setShowAddProjectModal(false);
   };
 
@@ -166,7 +246,7 @@ const App: React.FC = () => {
     }
 
     setProjects(newProjects);
-    saveToLocalStorage(newProjects, offices, appName);
+    saveToLocalStorage(newProjects, offices, kebabSessions, appName);
     setEditingMember(null);
   };
 
@@ -179,7 +259,7 @@ const App: React.FC = () => {
     };
     const newOffices = [...offices, newOffice];
     setOffices(newOffices);
-    saveToLocalStorage(projects, newOffices, appName);
+    saveToLocalStorage(projects, newOffices, kebabSessions, appName);
     setShowAddOfficeModal(false);
   };
 
@@ -206,9 +286,51 @@ const App: React.FC = () => {
           }),
         }));
       });
-      saveToLocalStorage(currentProjects, offices, appName);
+      saveToLocalStorage(currentProjects, offices, kebabSessions, appName);
       return currentProjects;
     });
+  };
+
+  // KEBAB HANDLERS
+  const handleAddKebabSession = () => {
+    if (!isEditable) return;
+    const newSession: KebabSession = {
+      id: `k-${Date.now()}`,
+      date: new Date().toISOString(),
+      status: 'open',
+      orders: []
+    };
+    const newSessions = [newSession, ...kebabSessions];
+    setKebabSessions(newSessions);
+    saveToLocalStorage(projects, offices, newSessions, appName);
+  };
+
+  const handleCloseKebabSession = (sessionId: string) => {
+    if (!isEditable) return;
+    const newSessions = kebabSessions.map(s => s.id === sessionId ? { ...s, status: 'closed' as const } : s);
+    setKebabSessions(newSessions);
+    saveToLocalStorage(projects, offices, newSessions, appName);
+  };
+
+  const handleDeleteKebabSession = (sessionId: string) => {
+    if (!isEditable) return;
+    const newSessions = kebabSessions.filter(s => s.id !== sessionId);
+    setKebabSessions(newSessions);
+    saveToLocalStorage(projects, offices, newSessions, appName);
+  };
+
+  const handleAddKebabOrder = (sessionId: string, orderData: Omit<KebabOrder, 'id' | 'timestamp'>) => {
+    if (!isEditable) return;
+    const newOrder: KebabOrder = {
+      ...orderData,
+      id: `ko-${Date.now()}`,
+      timestamp: new Date().toISOString()
+    };
+    const newSessions = kebabSessions.map(s => 
+      s.id === sessionId ? { ...s, orders: [...s.orders, newOrder] } : s
+    );
+    setKebabSessions(newSessions);
+    saveToLocalStorage(projects, offices, newSessions, appName);
   };
 
   const filteredProjects = useMemo(() => {
@@ -253,15 +375,15 @@ const App: React.FC = () => {
           </div>
 
           <div className="hidden md:flex bg-gray-100 dark:bg-slate-800 p-1 rounded-xl">
-            {["talents", "planning", "offices"].map(m => (
+            {["talents", "planning", "offices", "kebab"].map(m => (
               <button key={m} onClick={() => setViewMode(m as any)} className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === m ? "bg-white dark:bg-slate-700 text-sky-600 shadow-sm" : "text-gray-400"}`}>
-                {m === "talents" ? "Personnel" : m === "planning" ? "Plan de Vol" : "Appareils"}
+                {m === "talents" ? "Personnel" : m === "planning" ? "Plan de Vol" : m === "offices" ? "Appareils" : "Kebab"}
               </button>
             ))}
           </div>
 
           <div className="flex items-center gap-2">
-            <button onClick={handleLinkFile} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${fileHandle ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white'}`} title={fileHandle ? "Fichier lié" : "Lier un fichier JSON pour éditer"}><i className={`fa-solid ${fileHandle ? 'fa-hdd' : 'fa-link'}`}></i></button>
+            <button onClick={handleLinkFile} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${fileHandle ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white'}`} title={fileHandle ? "Fichier lié" : "Lier un fichier JSON ou CSV pour éditer"}><i className={`fa-solid ${fileHandle ? 'fa-hdd' : 'fa-link'}`}></i></button>
             <button onClick={() => setIsDarkMode(!isDarkMode)} className="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white transition-all"><i className={`fa-solid ${isDarkMode ? "fa-sun" : "fa-moon"}`}></i></button>
           </div>
         </div>
@@ -271,11 +393,11 @@ const App: React.FC = () => {
         {!isEditable && (
           <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-2xl flex items-center gap-4 animate-in slide-in-from-top-4">
             <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-amber-500/20"><i className="fa-solid fa-info-circle"></i></div>
-            <p className="text-xs font-bold text-amber-700 dark:text-amber-400">Pour modifier les collaborateurs ou le plan de vol, vous devez d'abord lier un fichier JSON local à l'aide du bouton <i className="fa-solid fa-link px-1"></i> en haut à droite.</p>
+            <p className="text-xs font-bold text-amber-700 dark:text-amber-400">Pour modifier les collaborateurs ou le plan de vol, vous devez d'abord lier un fichier JSON ou CSV local à l'aide du bouton <i className="fa-solid fa-link px-1"></i> en haut à droite.</p>
           </div>
         )}
 
-        {viewMode !== "offices" && (
+        {viewMode !== "offices" && viewMode !== "kebab" && (
           <div className="mb-10 flex flex-col lg:flex-row gap-4 items-stretch">
             <div className="relative flex-1 group">
               <input type="text" placeholder="Rechercher un membre ou une compétence..." className="w-full bg-white dark:bg-slate-900 border-none rounded-2xl py-5 pl-14 pr-6 text-sm focus:ring-2 focus:ring-sky-500 shadow-xl shadow-sky-500/5 transition-all h-full" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
@@ -302,6 +424,16 @@ const App: React.FC = () => {
             onUpdateAssignment={(id, d, a) => handleBulkAssignmentUpdate([{ memberId: id, day: d, assignment: a }])} 
             onUpdateAssignments={handleBulkAssignmentUpdate} 
             onAddOffice={() => setShowAddOfficeModal(true)} 
+          />
+        ) : viewMode === "kebab" ? (
+          <KebabManager 
+            sessions={kebabSessions}
+            projects={projects}
+            isEditable={isEditable}
+            onAddSession={handleAddKebabSession}
+            onCloseSession={handleCloseKebabSession}
+            onDeleteSession={handleDeleteKebabSession}
+            onAddOrder={handleAddKebabOrder}
           />
         ) : (
           filteredProjects.map(project => <ProjectSection key={project.id} project={project} viewMode={viewMode} isEditable={isEditable} onEditMember={(m) => setEditingMember({ member: m, projectId: project.id })} onAddMember={() => handleAddMember(project.id)} />)
