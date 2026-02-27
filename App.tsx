@@ -333,6 +333,18 @@ const App: React.FC = () => {
     saveToLocalStorage(projects, offices, newSessions, appName);
   };
 
+  const handleChocoblast = (memberId: string) => {
+    if (!isEditable) return;
+    const newProjects = projects.map(p => ({
+      ...p,
+      members: p.members.map(m => 
+        m.id === memberId ? { ...m, chocoblasts: (m.chocoblasts || 0) + 1 } : m
+      )
+    }));
+    setProjects(newProjects);
+    saveToLocalStorage(newProjects, offices, kebabSessions, appName);
+  };
+
   const filteredProjects = useMemo(() => {
     return projects
       .map((project) => ({
@@ -436,7 +448,17 @@ const App: React.FC = () => {
             onAddOrder={handleAddKebabOrder}
           />
         ) : (
-          filteredProjects.map(project => <ProjectSection key={project.id} project={project} viewMode={viewMode} isEditable={isEditable} onEditMember={(m) => setEditingMember({ member: m, projectId: project.id })} onAddMember={() => handleAddMember(project.id)} />)
+          filteredProjects.map(project => (
+            <ProjectSection 
+              key={project.id} 
+              project={project} 
+              viewMode={viewMode} 
+              isEditable={isEditable} 
+              onEditMember={(m) => setEditingMember({ member: m, projectId: project.id })} 
+              onAddMember={() => handleAddMember(project.id)} 
+              onChocoblast={handleChocoblast}
+            />
+          ))
         )}
       </main>
 

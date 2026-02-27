@@ -38,6 +38,7 @@ export interface StaffMember {
   certifications?: Certification[];
   presence: PresenceInfo;
   bio?: string;
+  chocoblasts?: number;
 }
 
 export interface Project {

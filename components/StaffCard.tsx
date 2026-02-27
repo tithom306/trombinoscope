@@ -9,11 +9,12 @@ interface StaffCardProps {
   viewMode: 'talents' | 'planning';
   isEditable: boolean;
   onEdit: () => void;
+  onChocoblast?: () => void;
 }
 
 const DAYS: DayOfWeek[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
 
-const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, isEditable, onEdit }) => {
+const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, isEditable, onEdit, onChocoblast }) => {
   const [imgError, setImgError] = useState(false);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const compactCaptureRef = useRef<HTMLDivElement>(null);
@@ -132,6 +133,19 @@ const StaffCard: React.FC<StaffCardProps> = ({ member, viewMode, isEditable, onE
              </div>
           </div>
         </div>
+      </div>
+
+      <div className="absolute top-4 left-4 z-20 flex flex-col items-center gap-1">
+        <button 
+          onClick={(e) => { e.stopPropagation(); onChocoblast?.(); }}
+          className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center text-amber-600 dark:text-amber-400 hover:scale-110 active:scale-95 transition-all shadow-lg border border-amber-200 dark:border-amber-800/50"
+          title="Chocoblast !"
+        >
+          <i className="fa-solid fa-bread-slice"></i>
+        </button>
+        <span className="text-[10px] font-black text-amber-600 dark:text-amber-400 bg-white/80 dark:bg-slate-900/80 px-2 py-0.5 rounded-full backdrop-blur-sm border border-amber-100 dark:border-amber-900/30 shadow-sm">
+          {member.chocoblasts || 0}
+        </span>
       </div>
 
       <div className="absolute top-4 right-4 flex gap-2 z-20">

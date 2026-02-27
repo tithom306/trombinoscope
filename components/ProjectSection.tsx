@@ -9,9 +9,10 @@ interface ProjectSectionProps {
   isEditable: boolean;
   onEditMember: (member: StaffMember) => void;
   onAddMember: () => void;
+  onChocoblast?: (memberId: string) => void;
 }
 
-const ProjectSection: React.FC<ProjectSectionProps> = ({ project, viewMode, isEditable, onEditMember, onAddMember }) => {
+const ProjectSection: React.FC<ProjectSectionProps> = ({ project, viewMode, isEditable, onEditMember, onAddMember, onChocoblast }) => {
   return (
     <div className="mb-12">
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -45,6 +46,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ project, viewMode, isEd
             viewMode={viewMode} 
             isEditable={isEditable}
             onEdit={() => onEditMember(member)}
+            onChocoblast={() => onChocoblast?.(member.id)}
           />
         ))}
       </div>
