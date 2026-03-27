@@ -1,8 +1,7 @@
-
 export enum Role {
-  DEVELOPER = 'Développeur',
-  BUSINESS_ANALYST = 'Business Analyst',
-  MANAGER = 'Manager'
+  DEVELOPER = "Développeur",
+  BUSINESS_ANALYST = "Business Analyst",
+  MANAGER = "Manager",
 }
 
 export interface Skill {
@@ -15,7 +14,7 @@ export interface Certification {
   provider: string; // ex: AWS, Microsoft, Scrum.org
 }
 
-export type DayOfWeek = 'Lundi' | 'Mardi' | 'Mercredi' | 'Jeudi' | 'Vendredi';
+export type DayOfWeek = "Lundi" | "Mardi" | "Mercredi" | "Jeudi" | "Vendredi";
 
 export interface Office {
   id: string;
@@ -57,31 +56,33 @@ export interface AppMetadata {
 }
 
 export enum KebabSauce {
-  BLANCHE = 'Blanche',
-  ALGERIENNE = 'Algérienne',
-  SAMOURAI = 'Samouraï',
-  HARISSA = 'Harissa',
-  MAYONNAISE = 'Mayonnaise',
-  KETCHUP = 'Ketchup',
-  ANDALOUSE = 'Andalouse',
-  CURRY = 'Curry'
+  BLANCHE = "Blanche",
+  ALGERIENNE = "Algérienne",
+  SAMOURAI = "Samouraï",
+  HARISSA = "Harissa",
+  MAYONNAISE = "Mayonnaise",
+  KETCHUP = "Ketchup",
+  ANDALOUSE = "Andalouse",
+  CURRY = "Curry",
 }
 
 export enum KebabIngredient {
-  SALADE = 'Salade',
-  TOMATE = 'Tomate',
-  OIGNON = 'Oignon',
-  OLIVE = 'Olive',
-  FETA = 'Feta',
-  CHOUX = 'Choux',
-  FRITES_EXTERIEUR = 'Frites à l\'extérieur'
+  SALADE = "Salade",
+  TOMATE = "Tomate",
+  OIGNON = "Oignon",
+  OLIVE = "Olive",
+  FETA = "Feta",
+  CHOUX = "Choux",
+  FRITES_EXTERIEUR = "Frites à l'extérieur",
+  ASSIETTE_KEBAB = "Assiette Kebab",
+  FALAFEL = "Falafel",
 }
 
 export interface KebabOrder {
   id: string;
   memberId: string;
   memberName: string;
-  sauce: KebabSauce;
+  sauces: KebabSauce[];
   ingredients: KebabIngredient[];
   comment?: string;
   timestamp: string;
@@ -90,6 +91,6 @@ export interface KebabOrder {
 export interface KebabSession {
   id: string;
   date: string;
-  status: 'open' | 'closed';
+  status: "open" | "closed";
   orders: KebabOrder[];
 }
