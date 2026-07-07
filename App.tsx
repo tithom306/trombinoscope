@@ -418,14 +418,14 @@ const App: React.FC = () => {
               <i className="fa-solid fa-plane text-xl"></i>
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg font-black leading-none">{appName}</h1>
+              <h1 className="text-lg font-black font-orbitron tracking-tight leading-none">{appName}</h1>
               <div className="flex items-center gap-2 mt-1">
-                <p className="text-[10px] font-bold text-sky-500 tracking-widest uppercase">
+                <p className="text-[10px] font-bold font-tech text-sky-500 tracking-widest uppercase">
                   Fleet Management
                 </p>
                 <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                  <span className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">
+                  <span className="text-[8px] font-black font-tech text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">
                     Base SQL
                   </span>
                 </div>
@@ -438,7 +438,7 @@ const App: React.FC = () => {
               <button
                 key={m}
                 onClick={() => setViewMode(m as any)}
-                className={`px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === m ? "bg-white dark:bg-slate-700 text-sky-600 shadow-sm" : "text-gray-400"}`}
+                className={`px-4 py-2 rounded-lg text-[10px] font-black font-tech uppercase tracking-widest transition-all ${viewMode === m ? "bg-white dark:bg-slate-700 text-sky-600 shadow-sm" : "text-gray-400"}`}
               >
                 {m === "talents"
                   ? "Personnel"
@@ -478,7 +478,7 @@ const App: React.FC = () => {
               <input
                 type="text"
                 placeholder="Rechercher un membre ou une compétence..."
-                className="w-full bg-white dark:bg-slate-900 border-none rounded-2xl py-5 pl-14 pr-6 text-sm focus:ring-2 focus:ring-sky-500 shadow-xl shadow-sky-500/5 transition-all h-full"
+                className="w-full bg-white dark:bg-slate-900 border-none rounded-2xl py-5 pl-14 pr-6 text-sm focus:ring-2 focus:ring-sky-500 shadow-xl shadow-sky-500/5 transition-all h-full font-sans"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -487,7 +487,7 @@ const App: React.FC = () => {
             <div className="flex bg-white dark:bg-slate-900 p-1.5 rounded-2xl shadow-xl shadow-sky-500/5 items-center overflow-x-auto min-w-fit">
               <button
                 onClick={() => setSelectedRole("All")}
-                className={`px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${selectedRole === "All" ? "bg-sky-500 text-white" : "text-gray-400 hover:text-sky-500"}`}
+                className={`px-5 py-3 rounded-xl text-[10px] font-black font-tech uppercase tracking-widest transition-all ${selectedRole === "All" ? "bg-sky-500 text-white" : "text-gray-400 hover:text-sky-500"}`}
               >
                 Tous
               </button>
@@ -495,7 +495,7 @@ const App: React.FC = () => {
                 <button
                   key={role}
                   onClick={() => setSelectedRole(role)}
-                  className={`px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${selectedRole === role ? "bg-sky-500 text-white" : "text-gray-400 hover:text-sky-500"}`}
+                  className={`px-5 py-3 rounded-xl text-[10px] font-black font-tech uppercase tracking-widest transition-all whitespace-nowrap ${selectedRole === role ? "bg-sky-500 text-white" : "text-gray-400 hover:text-sky-500"}`}
                 >
                   {role}
                 </button>
@@ -505,7 +505,7 @@ const App: React.FC = () => {
                   <div className="w-px h-8 bg-gray-100 dark:bg-slate-800 mx-2"></div>
                   <button
                     onClick={() => setShowAddProjectModal(true)}
-                    className="px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-sky-500 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition-all flex items-center gap-2"
+                    className="px-5 py-3 rounded-xl text-[10px] font-black font-tech uppercase tracking-widest text-sky-500 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition-all flex items-center gap-2"
                   >
                     <i className="fa-solid fa-folder-plus"></i> Nouveau Projet
                   </button>
@@ -538,6 +538,36 @@ const App: React.FC = () => {
             onDeleteSession={handleDeleteKebabSession}
             onSaveOrder={handleSaveKebabOrder}
           />
+        ) : filteredProjects.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-12 glass-panel rounded-2xl border border-sky-500/20 max-w-lg mx-auto text-center scanline-effect min-h-[350px] relative overflow-hidden">
+            {/* Pulsating green radar circle */}
+            <div className="relative w-44 h-44 rounded-full border border-emerald-500/20 bg-emerald-950/20 flex items-center justify-center mb-6">
+              {/* Radar Sweep Line */}
+              <div className="absolute inset-0 rounded-full border border-emerald-500/30 animate-radar-sweep origin-center"></div>
+              {/* Concentric radar rings */}
+              <div className="w-32 h-32 rounded-full border border-emerald-500/10 absolute"></div>
+              <div className="w-20 h-20 rounded-full border border-emerald-500/10 absolute"></div>
+              {/* Radar Sweep Grid Lines */}
+              <div className="absolute top-0 bottom-0 left-1/2 w-px bg-emerald-500/10"></div>
+              <div className="absolute left-0 right-0 top-1/2 h-px bg-emerald-500/10"></div>
+              {/* Blinking Warning Dot */}
+              <div className="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-12 left-16 animate-ping"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-rose-500 absolute top-12 left-16"></div>
+              <i className="fa-solid fa-satellite-dish text-emerald-500/40 text-4xl"></i>
+            </div>
+            <h3 className="text-base font-black font-orbitron text-rose-500 tracking-wider mb-2">
+              [ ALERT // RADAR EMPTY ]
+            </h3>
+            <p className="text-xs font-tech text-gray-500 dark:text-slate-400 max-w-sm mb-6">
+              Aucun pilote ou escadrille opérationnelle détectée dans le périmètre de recherche.
+            </p>
+            <button 
+              onClick={() => { setSearchTerm(""); setSelectedRole("All"); }}
+              className="px-6 py-3 bg-sky-600 text-white rounded-xl text-[10px] font-black uppercase shadow-lg shadow-sky-600/20 font-tech tracking-widest hover:scale-105 active:scale-95 transition-all"
+            >
+              Réinitialiser les Radars
+            </button>
+          </div>
         ) : (
           filteredProjects.map((project) => (
             <ProjectSection

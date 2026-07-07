@@ -107,4 +107,15 @@ export const PersistenceAPI = {
     if (!response.ok) throw new Error("Échec de l'enregistrement de la commande.");
     return response.json();
   },
+
+  async uploadAvatar(fileName: string, fileType: string, base64Data: string): Promise<string> {
+    const response = await fetch(`${API_BASE}/api/upload`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fileName, fileType, base64Data }),
+    });
+    if (!response.ok) throw new Error("Échec du téléversement de l'avatar.");
+    const data = await response.json();
+    return data.imageUrl;
+  },
 };

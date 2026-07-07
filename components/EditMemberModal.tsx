@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StaffMember, Role, DayOfWeek, Office, Certification, Project } from '../types';
 import { GoogleGenAI, Type } from "@google/genai";
+import { PersistenceAPI } from '../persistence-api';
 
 interface EditMemberModalProps {
   member: StaffMember;
@@ -55,6 +56,28 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, proj
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result as string;
+        const imageUrl = await PersistenceAPI.uploadAvatar(file.name, file.type, base64);
+        setFormData(prev => ({ ...prev, avatar: imageUrl }));
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.error("Avatar upload failed:", err);
+      alert("Échec du téléversement de l'image.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   useEffect(() => {
     // Si c'est un nouveau membre (nom par défaut), on focus le champ nom
@@ -303,13 +326,30 @@ const EditMemberModal: React.FC<EditMemberModalProps> = ({ member, offices, proj
         {/* Header */}
         <div className="p-8 border-b border-gray-100 dark:border-slate-800 flex justify-between items-center bg-sky-50/50 dark:bg-slate-800/20">
           <div className="flex items-center gap-5">
-            <div className="relative">
+            <div className="relative group cursor-pointer">
                <img 
-                 src={formData.avatar.startsWith('http') || formData.avatar.startsWith('input_file_') ? formData.avatar : `./${formData.avatar}`} 
-                 className="w-14 h-14 rounded-2xl object-cover shadow-inner bg-gray-200 border-2 border-sky-400" 
+                 src={formData.avatar.startsWith('http') || formData.avatar.startsWith('input_file_') || formData.avatar.startsWith('/') ? formData.avatar : `./${formData.avatar}`} 
+                 className="w-14 h-14 rounded-2xl object-cover shadow-inner bg-gray-200 border-2 border-sky-400 group-hover:opacity-60 transition-opacity" 
                  alt=""
                  onError={(e) => (e.currentTarget.src = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y")}
                />
+               <label className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white text-[8px] font-black uppercase rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-center">
+                 {isUploading ? (
+                   <i className="fa-solid fa-spinner fa-spin text-sm"></i>
+                 ) : (
+                   <>
+                     <i className="fa-solid fa-camera mb-0.5 text-xs"></i>
+                     <span>Upload</span>
+                   </>
+                 )}
+                 <input 
+                   type="file" 
+                   accept="image/*" 
+                   className="hidden" 
+                   disabled={isUploading}
+                   onChange={handleAvatarUpload}
+                 />
+               </label>
             </div>
             <div className="min-w-0">
               <h2 className="text-2xl font-black text-gray-900 dark:text-white leading-tight truncate">

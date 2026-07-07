@@ -4,15 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SSG Airbus - Trombinoscope</title>
+    <!-- Google Fonts Imports -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" crossorigin="anonymous">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
+            fontFamily: {
+              sans: ["'Plus Jakarta Sans'", "sans-serif"],
+              orbitron: ["'Orbitron'", "sans-serif"],
+              tech: ["'Share Tech Mono'", "monospace"],
+            },
             animation: {
               "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "radar-sweep": "radar-sweep 6s linear infinite",
+              "scanline": "scanline 6s linear infinite",
             },
+            keyframes: {
+              "radar-sweep": {
+                "0%": { transform: "rotate(0deg)" },
+                "100%": { transform: "rotate(360deg)" },
+              },
+              "scanline": {
+                "0%": { transform: "translateY(-100%)" },
+                "100%": { transform: "translateY(100%)" },
+              }
+            }
           },
         },
       };
