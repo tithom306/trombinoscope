@@ -4,6 +4,7 @@ import EditMemberModal from "./components/EditMemberModal";
 import KebabManager from "./components/KebabManager";
 import OfficesAvailabilityView from "./components/OfficesAvailabilityView";
 import ProjectSection from "./components/ProjectSection";
+import { PersistenceAPI } from "./persistence-api";
 import {
   DayOfWeek,
   KebabOrder,
@@ -34,12 +35,7 @@ const App: React.FC = () => {
   const [showAddOfficeModal, setShowAddOfficeModal] = useState(false);
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
 
-  const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(
-    null,
-  );
-  const [isSaving, setIsSaving] = useState(false);
-
-  const isEditable = !!fileHandle;
+  const isEditable = true; // Toujours éditable avec la BDD
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem("team_canvas_theme");
@@ -59,160 +55,47 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
-  useEffect(() => {
-    const savedProjects = localStorage.getItem("team_canvas_data_projects");
-    const savedOffices = localStorage.getItem("team_canvas_data_offices");
-    const savedKebab = localStorage.getItem("team_canvas_data_kebab");
-    const savedName = localStorage.getItem("team_canvas_data_name");
-    const savedVersion = localStorage.getItem("team_canvas_data_version");
+  // Chargement initial depuis la BDD SQL via l'API REST
+  const refreshData = async () => {
+    try {
+      const data = await PersistenceAPI.loadData();
+      setAppName(data.name || "SkyCenter");
+      setProjects(data.projects || []);
+      setOffices(data.offices || []);
+      setKebabSessions(data.kebabSessions || []);
+    } catch (e) {
+      console.error("Erreur lors du chargement des données depuis la BDD:", e);
+    }
+  };
 
-    fetch("./metadata.json")
-      .then((response) => response.json())
-      .then((data: any) => {
-        const currentVersion = data.version || "1.0";
-        if (savedProjects && savedOffices && savedVersion === currentVersion) {
-          setProjects(JSON.parse(savedProjects));
-          setOffices(JSON.parse(savedOffices));
-          setKebabSessions(
-            savedKebab ? JSON.parse(savedKebab) : data.kebabSessions || [],
-          );
-          setAppName(savedName || data.name || "SkyCenter");
-          setIsLoading(false);
-        } else {
-          loadFreshData(data);
-        }
-      })
-      .catch(() => {
-        setIsLoading(false);
-      });
+  useEffect(() => {
+    refreshData().finally(() => {
+      setIsLoading(false);
+    });
   }, []);
 
-  const loadFreshData = (data: any) => {
-    setProjects(data.projects);
-    setOffices(data.offices);
-    setKebabSessions(data.kebabSessions || []);
-    setAppName(data.name || "SkyCenter");
-    saveToLocalStorage(
-      data.projects,
-      data.offices,
-      data.kebabSessions || [],
-      data.name,
-      data.version || "1.0",
-    );
-    setIsLoading(false);
-  };
-
-  const saveToLocalStorage = (
-    projData: Project[],
-    offData: Office[],
-    kebabData: KebabSession[],
-    name?: string,
-    version?: string,
-  ) => {
-    localStorage.setItem("team_canvas_data_projects", JSON.stringify(projData));
-    localStorage.setItem("team_canvas_data_offices", JSON.stringify(offData));
-    localStorage.setItem("team_canvas_data_kebab", JSON.stringify(kebabData));
-    if (name) localStorage.setItem("team_canvas_data_name", name);
-    if (version) localStorage.setItem("team_canvas_data_version", version);
-  };
-
-  useEffect(() => {
-    if (fileHandle && !isLoading) {
-      const timer = setTimeout(() => {
-        saveToFile();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [projects, offices, appName, fileHandle]);
-
-  const saveToFile = async () => {
-    if (!fileHandle) return;
-    setIsSaving(true);
-    try {
-      const writable = await fileHandle.createWritable();
-      const dataToSave = {
-        name: appName,
-        version: localStorage.getItem("team_canvas_data_version") || "3.0",
-        projects: projects,
-        offices: offices,
-        kebabSessions: kebabSessions,
-        description: "Sauvegarde synchronisée",
-      };
-      await writable.write(JSON.stringify(dataToSave, null, 2));
-      await writable.close();
-    } catch (err) {
-      console.error("Erreur sync fichier:", err);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   const handleLinkFile = async () => {
-    const pickerOptions = {
-      types: [
-        {
-          description: "Fichiers de données (JSON, CSV)",
-          accept: {
-            "application/json": [".json"],
-            "text/csv": [".csv"],
-          },
-        },
-      ],
-      multiple: false,
-    };
-
-    try {
-      if (!(window as any).showOpenFilePicker) {
-        // Fallback pour les navigateurs ne supportant pas l'API File System Access
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = ".json,.csv";
-        input.onchange = async (e: any) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const content = await file.text();
-          processFileContent(file.name, content);
-        };
-        input.click();
-        return;
-      }
-
-      const [handle] = await (window as any).showOpenFilePicker(pickerOptions);
-      const file = await handle.getFile();
+    // Déclencheur d'import de fichier CSV optionnel (sans file system handle pour modification)
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".csv";
+    input.onchange = async (e: any) => {
+      const file = e.target.files[0];
+      if (!file) return;
       const content = await file.text();
-      setFileHandle(handle);
       processFileContent(file.name, content);
-    } catch (err) {
-      console.log("Liaison annulée ou erreur:", err);
-    }
+    };
+    input.click();
   };
 
   const processFileContent = (fileName: string, content: string) => {
-    if (fileName.endsWith(".json")) {
-      try {
-        const data = JSON.parse(content);
-        setAppName(data.name || "SkyCenter");
-        setProjects(data.projects || []);
-        setOffices(data.offices || []);
-        setKebabSessions(data.kebabSessions || []);
-        saveToLocalStorage(
-          data.projects || [],
-          data.offices || [],
-          data.kebabSessions || [],
-          data.name,
-          data.version || "1.0",
-        );
-      } catch (e) {
-        alert("Erreur lors de la lecture du JSON");
-      }
-    } else if (fileName.endsWith(".csv")) {
+    if (fileName.endsWith(".csv")) {
       Papa.parse(content, {
         header: true,
         skipEmptyLines: true,
-        complete: (results: Papa.ParseResult<any>) => {
+        complete: async (results: Papa.ParseResult<any>) => {
           const importedMembers: StaffMember[] = results.data.map(
             (row: any, index: number) => {
-              // Mapping basique des colonnes CSV vers StaffMember
               const skills: Skill[] = (row.skills || row.Compétences || "")
                 .split(",")
                 .filter((s: string) => s.trim())
@@ -230,38 +113,43 @@ const App: React.FC = () => {
             },
           );
 
-          const newProject: Project = {
-            id: `p-csv-${Date.now()}`,
-            name: "Import CSV",
-            description: `Membres importés de ${fileName}`,
-            members: importedMembers,
-          };
-
-          const newProjects = [...projects, newProject];
-          setProjects(newProjects);
-          saveToLocalStorage(newProjects, offices, kebabSessions, appName);
-          alert(`${importedMembers.length} membres importés avec succès !`);
+          try {
+            const pId = `p-csv-${Date.now()}`;
+            await PersistenceAPI.createProject(pId, "Import CSV", `Membres importés de ${fileName}`);
+            for (const m of importedMembers) {
+              await PersistenceAPI.createMember(pId, m);
+            }
+            alert(`${importedMembers.length} membres importés avec succès !`);
+            refreshData();
+          } catch (e) {
+            console.error(e);
+            alert("Erreur lors de l'import des collaborateurs du CSV.");
+          }
         },
       });
     }
   };
 
-  const handleAddProject = (name: string, description: string) => {
-    if (!isEditable) return;
+  const handleAddProject = async (name: string, description: string) => {
+    const id = `p-${Date.now()}`;
     const newProject: Project = {
-      id: `p-${Date.now()}`,
+      id,
       name,
       description,
       members: [],
     };
-    const newProjects = [...projects, newProject];
-    setProjects(newProjects);
-    saveToLocalStorage(newProjects, offices, kebabSessions, appName);
+    setProjects((prev) => [...prev, newProject]);
     setShowAddProjectModal(false);
+
+    try {
+      await PersistenceAPI.createProject(id, name, description);
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
   const handleAddMember = (projectId: string) => {
-    if (!isEditable) return;
     const newMember: StaffMember = {
       id: `m-${Date.now()}`,
       name: "Nouveau Membre",
@@ -274,70 +162,86 @@ const App: React.FC = () => {
     setEditingMember({ member: newMember, projectId, isNew: true });
   };
 
-  const handleUpdateMember = (
+  const handleUpdateMember = async (
     updatedMember: StaffMember,
     targetProjectId: string,
     isNew?: boolean,
   ) => {
-    if (!isEditable) return;
     const sourceProjectId = editingMember?.projectId;
-    let newProjects = [...projects];
-
-    if (isNew) {
-      newProjects = newProjects.map((p) =>
-        p.id === targetProjectId
-          ? { ...p, members: [...p.members, updatedMember] }
-          : p,
-      );
-    } else if (sourceProjectId && sourceProjectId !== targetProjectId) {
-      newProjects = newProjects.map((p) => {
-        if (p.id === sourceProjectId)
-          return {
-            ...p,
-            members: p.members.filter((m) => m.id !== updatedMember.id),
-          };
-        if (p.id === targetProjectId)
-          return { ...p, members: [...p.members, updatedMember] };
-        return p;
-      });
-    } else {
-      newProjects = newProjects.map((p) =>
-        p.id === targetProjectId
-          ? {
+    
+    // Optimistic Update
+    setProjects((prevProjects) => {
+      let newProjects = [...prevProjects];
+      if (isNew) {
+        newProjects = newProjects.map((p) =>
+          p.id === targetProjectId
+            ? { ...p, members: [...p.members, updatedMember] }
+            : p,
+        );
+      } else if (sourceProjectId && sourceProjectId !== targetProjectId) {
+        newProjects = newProjects.map((p) => {
+          if (p.id === sourceProjectId)
+            return {
               ...p,
-              members: p.members.map((m) =>
-                m.id === updatedMember.id ? updatedMember : m,
-              ),
-            }
-          : p,
-      );
-    }
+              members: p.members.filter((m) => m.id !== updatedMember.id),
+            };
+          if (p.id === targetProjectId)
+            return { ...p, members: [...p.members, updatedMember] };
+          return p;
+        });
+      } else {
+        newProjects = newProjects.map((p) =>
+          p.id === targetProjectId
+            ? {
+                ...p,
+                members: p.members.map((m) =>
+                  m.id === updatedMember.id ? updatedMember : m,
+                ),
+              }
+            : p,
+        );
+      }
+      return newProjects;
+    });
 
-    setProjects(newProjects);
-    saveToLocalStorage(newProjects, offices, kebabSessions, appName);
     setEditingMember(null);
+
+    // DB Persistence
+    try {
+      if (isNew) {
+        await PersistenceAPI.createMember(targetProjectId, updatedMember);
+      } else {
+        await PersistenceAPI.updateMember(updatedMember, targetProjectId);
+      }
+      refreshData(); // Sync exact relations/IDs from DB
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
-  const handleAddOffice = (name: string, stationCount: number) => {
-    if (!isEditable) return;
-    const newOffice: Office = {
-      id: `off-${Date.now()}`,
-      name,
-      stations: Array.from(
-        { length: stationCount },
-        (_, i) => `Poste ${i + 1}`,
-      ),
-    };
-    const newOffices = [...offices, newOffice];
-    setOffices(newOffices);
-    saveToLocalStorage(projects, newOffices, kebabSessions, appName);
+  const handleAddOffice = async (name: string, stationCount: number) => {
+    const id = `off-${Date.now()}`;
+    const stations = Array.from(
+      { length: stationCount },
+      (_, i) => `Poste ${i + 1}`,
+    );
+    const newOffice: Office = { id, name, stations };
+    setOffices((prev) => [...prev, newOffice]);
     setShowAddOfficeModal(false);
+
+    try {
+      await PersistenceAPI.createOffice(id, name, stations);
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
-  const handleBulkAssignmentUpdate = (
+  const handleBulkAssignmentUpdate = async (
     updates: { memberId: string; day: DayOfWeek; assignment: string | null }[],
   ) => {
-    if (!isEditable) return;
+    // Optimistic Update
     setProjects((prevProjects) => {
       let currentProjects = [...prevProjects];
       updates.forEach(({ memberId, day, assignment }) => {
@@ -362,89 +266,121 @@ const App: React.FC = () => {
           }),
         }));
       });
-      saveToLocalStorage(currentProjects, offices, kebabSessions, appName);
       return currentProjects;
     });
+
+    try {
+      await PersistenceAPI.updateBulkPresence(updates);
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
   // KEBAB HANDLERS
-  const handleAddKebabSession = () => {
-    if (!isEditable) return;
+  const handleAddKebabSession = async () => {
+    const id = `k-${Date.now()}`;
+    const date = new Date().toISOString();
     const newSession: KebabSession = {
-      id: `k-${Date.now()}`,
-      date: new Date().toISOString(),
+      id,
+      date,
       status: "open",
       orders: [],
     };
-    const newSessions = [newSession, ...kebabSessions];
-    setKebabSessions(newSessions);
-    saveToLocalStorage(projects, offices, newSessions, appName);
+    setKebabSessions((prev) => [newSession, ...prev]);
+
+    try {
+      await PersistenceAPI.createKebabSession(id, date, "open");
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
-  const handleCloseKebabSession = (sessionId: string) => {
-    if (!isEditable) return;
-    const newSessions = kebabSessions.map((s) =>
-      s.id === sessionId ? { ...s, status: "closed" as const } : s,
+  const handleCloseKebabSession = async (sessionId: string) => {
+    setKebabSessions((prev) =>
+      prev.map((s) =>
+        s.id === sessionId ? { ...s, status: "closed" as const } : s,
+      ),
     );
-    setKebabSessions(newSessions);
-    saveToLocalStorage(projects, offices, newSessions, appName);
+
+    try {
+      await PersistenceAPI.closeKebabSession(sessionId);
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
-  const handleDeleteKebabSession = (sessionId: string) => {
-    if (!isEditable) return;
-    const newSessions = kebabSessions.filter((s) => s.id !== sessionId);
-    setKebabSessions(newSessions);
-    saveToLocalStorage(projects, offices, newSessions, appName);
+  const handleDeleteKebabSession = async (sessionId: string) => {
+    setKebabSessions((prev) => prev.filter((s) => s.id !== sessionId));
+
+    try {
+      await PersistenceAPI.deleteKebabSession(sessionId);
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
-  const handleSaveKebabOrder = (
+  const handleSaveKebabOrder = async (
     sessionId: string,
     orderData: Omit<KebabOrder, "timestamp">,
   ) => {
-    if (!isEditable) return;
+    // Optimistic Update
+    setKebabSessions((prevSessions) => {
+      return prevSessions.map((s) => {
+        if (s.id !== sessionId) return s;
 
-    const newSessions = kebabSessions.map((s) => {
-      if (s.id !== sessionId) return s;
-
-      const existingOrderIndex = s.orders.findIndex(
-        (o) => o.id === orderData.id,
-      );
-      let newOrders;
-
-      if (existingOrderIndex > -1) {
-        // Update existing order
-        newOrders = s.orders.map((o) =>
-          o.id === orderData.id
-            ? { ...orderData, timestamp: new Date().toISOString() }
-            : o,
+        const existingOrderIndex = s.orders.findIndex(
+          (o) => o.id === orderData.id,
         );
-      } else {
-        // Add new order
-        const newOrder: KebabOrder = {
-          ...orderData,
-          id: orderData.id || `ko-${Date.now()}`,
-          timestamp: new Date().toISOString(),
-        };
-        newOrders = [...s.orders, newOrder];
-      }
+        let newOrders;
 
-      return { ...s, orders: newOrders };
+        if (existingOrderIndex > -1) {
+          newOrders = s.orders.map((o) =>
+            o.id === orderData.id
+              ? { ...orderData, timestamp: new Date().toISOString() }
+              : o,
+          );
+        } else {
+          const newOrder: KebabOrder = {
+            ...orderData,
+            id: orderData.id || `ko-${Date.now()}`,
+            timestamp: new Date().toISOString(),
+          };
+          newOrders = [...s.orders, newOrder];
+        }
+
+        return { ...s, orders: newOrders };
+      });
     });
 
-    setKebabSessions(newSessions);
-    saveToLocalStorage(projects, offices, newSessions, appName);
+    try {
+      await PersistenceAPI.saveKebabOrder(sessionId, orderData);
+      refreshData(); // Reload to get database autogenerated timestamps
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
-  const handleChocoblast = (memberId: string) => {
-    if (!isEditable) return;
-    const newProjects = projects.map((p) => ({
-      ...p,
-      members: p.members.map((m) =>
-        m.id === memberId ? { ...m, chocoblasts: (m.chocoblasts || 0) + 1 } : m,
-      ),
-    }));
-    setProjects(newProjects);
-    saveToLocalStorage(newProjects, offices, kebabSessions, appName);
+  const handleChocoblast = async (memberId: string) => {
+    setProjects((prev) =>
+      prev.map((p) => ({
+        ...p,
+        members: p.members.map((m) =>
+          m.id === memberId ? { ...m, chocoblasts: (m.chocoblasts || 0) + 1 } : m,
+        ),
+      })),
+    );
+
+    try {
+      await PersistenceAPI.incrementChocoblasts(memberId);
+    } catch (err) {
+      console.error(err);
+      refreshData();
+    }
   };
 
   const filteredProjects = useMemo(() => {
@@ -487,23 +423,12 @@ const App: React.FC = () => {
                 <p className="text-[10px] font-bold text-sky-500 tracking-widest uppercase">
                   Fleet Management
                 </p>
-                {fileHandle ? (
-                  <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20">
-                    <div
-                      className={`w-1.5 h-1.5 rounded-full ${isSaving ? "bg-amber-500 animate-pulse" : "bg-emerald-500"}`}
-                    ></div>
-                    <span className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">
-                      Live Sync
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/10 rounded-full border border-amber-500/20">
-                    <i className="fa-solid fa-lock text-[8px] text-amber-600"></i>
-                    <span className="text-[8px] font-black text-amber-600 uppercase tracking-tighter">
-                      Lecture Seule
-                    </span>
-                  </div>
-                )}
+                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                  <span className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">
+                    Base SQL
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -529,16 +454,10 @@ const App: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={handleLinkFile}
-              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${fileHandle ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20" : "bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white"}`}
-              title={
-                fileHandle
-                  ? "Fichier lié"
-                  : "Lier un fichier JSON ou CSV pour éditer"
-              }
+              className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 hover:bg-sky-500 hover:text-white flex items-center justify-center transition-all"
+              title="Importer des collaborateurs via un fichier CSV"
             >
-              <i
-                className={`fa-solid ${fileHandle ? "fa-hdd" : "fa-link"}`}
-              ></i>
+              <i className="fa-solid fa-file-import"></i>
             </button>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
@@ -553,19 +472,6 @@ const App: React.FC = () => {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-10">
-        {!isEditable && (
-          <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 rounded-2xl flex items-center gap-4 animate-in slide-in-from-top-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-amber-500/20">
-              <i className="fa-solid fa-info-circle"></i>
-            </div>
-            <p className="text-xs font-bold text-amber-700 dark:text-amber-400">
-              Pour modifier les collaborateurs ou le plan de vol, vous devez
-              d'abord lier un fichier JSON ou CSV local à l'aide du bouton{" "}
-              <i className="fa-solid fa-link px-1"></i> en haut à droite.
-            </p>
-          </div>
-        )}
-
         {viewMode !== "offices" && viewMode !== "kebab" && (
           <div className="mb-10 flex flex-col lg:flex-row gap-4 items-stretch">
             <div className="relative flex-1 group">

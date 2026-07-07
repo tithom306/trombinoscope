@@ -55,3 +55,8 @@ Thumbs.db
 dist/
 dist-ssr/
 *.local
+
+# Agent 3-layer architecture files
+.tmp/
+credentials.json
+token.json
