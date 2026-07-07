@@ -1,0 +1,91 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  id          String        @id @default(uuid())
+  name        String
+  description String
+  members     StaffMember[]
+}
+
+model StaffMember {
+  id             String          @id @default(uuid())
+  name           String
+  role           String
+  avatar         String
+  email          String
+  bio            String?
+  chocoblasts    Int             @default(0)
+  projectId      String
+  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skills         Skill[]
+  certifications Certification[]
+  schedule       Presence[]
+  kebabOrders    KebabOrder[]
+}
+
+model Skill {
+  id       String      @id @default(uuid())
+  name     String
+  level    Int         // 1 to 5
+  memberId String
+  member   StaffMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+}
+
+model Certification {
+  id       String      @id @default(uuid())
+  name     String
+  provider String
+  memberId String
+  member   StaffMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+}
+
+model Presence {
+  id       String      @id @default(uuid())
+  day      String      // Lundi, Mardi, etc.
+  station  String      // "Nom Bureau - Poste X"
+  memberId String
+  member   StaffMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+}
+
+model Office {
+  id       String    @id @default(uuid())
+  name     String
+  stations Station[]
+}
+
+model Station {
+  id       String @id @default(uuid())
+  name     String
+  officeId String
+  office   Office @relation(fields: [officeId], references: [id], onDelete: Cascade)
+}
+
+model KebabSession {
+  id      String       @id @default(uuid())
+  date    DateTime     @default(now())
+  status  String       // "open" | "closed"
+  orders  KebabOrder[]
+}
+
+model KebabOrder {
+  id          String       @id @default(uuid())
+  sessionId   String
+  session     KebabSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  memberId    String
+  member      StaffMember  @relation(fields: [memberId], references: [id])
+  sauces      String       // Sauces concaténées en CSV ou stockées en JSON
+  ingredients String       // Ingrédients concaténées en CSV ou stockées en JSON
+  comment     String?
+  timestamp   DateTime     @default(now())
+}
+
+model AppConfig {
+  key   String @id
+  value String
+}
