@@ -4,6 +4,7 @@ import cors from "cors";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import sharp from "sharp";
 import pkg from "@prisma/client";
 const { PrismaClient } = pkg;
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
@@ -287,17 +288,20 @@ app.post("/api/upload", async (req, res) => {
     const cleanBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
     const buffer = Buffer.from(cleanBase64, "base64");
     
-    const ext = fileType.split("/")[1] || "png";
-    const newFileName = `upload-${Date.now()}.${ext}`;
-    
     // Ensure public/avatars/ exists
     const avatarsDir = path.resolve(__dirname, "public", "avatars");
     if (!fs.existsSync(avatarsDir)) {
       fs.mkdirSync(avatarsDir, { recursive: true });
     }
     
+    // Process image with Sharp
+    const newFileName = `upload-${Date.now()}.webp`;
     const filePath = path.join(avatarsDir, newFileName);
-    fs.writeFileSync(filePath, buffer);
+    
+    await sharp(buffer)
+      .resize({ width: 256, height: 256, fit: 'cover' })
+      .webp({ quality: 85 })
+      .toFile(filePath);
     
     // Return relative URL served statically
     const imageUrl = `/trombinoscope/avatars/${newFileName}`;
@@ -610,6 +614,20 @@ app.post("/api/kebab-sessions/:sessionId/orders", async (req, res) => {
     res.status(500).json({ error: "Failed to save kebab order." });
   }
 });
+
+// Serve frontend static files in production
+const distPath = path.resolve(__dirname, "dist");
+if (fs.existsSync(distPath)) {
+  app.use("/trombinoscope", express.static(distPath));
+  app.get("/trombinoscope/*", (req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
+  });
+  
+  // Also redirect root to /trombinoscope to be safe
+  app.get("/", (req, res) => {
+    res.redirect("/trombinoscope");
+  });
+}
 
 // Start Server
 app.listen(PORT, async () => {
